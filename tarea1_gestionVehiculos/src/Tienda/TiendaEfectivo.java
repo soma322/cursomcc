@@ -43,7 +43,7 @@ public class TiendaEfectivo extends Tienda {
 	@Override
 	public void verInventario() {
 		for(Productos prod : super.inventario ) {
-			System.out.println("Nombre del producto: "+prod.nombre+ "cantidad: "+prod.cantidad+" y con un valor de: "+prod.precio);
+			System.out.println("Nombre del producto: "+prod.nombre+ " cantidad: "+prod.cantidad+" y con un valor de: "+prod.precio);
 		}
 	}
 

@@ -44,12 +44,14 @@ public class interraccion {
 		String nombre = "";
 		String direccion = "";
 		String telefono = "";
-		Tienda tienda;
+		String tipoPago = "";
+		Tienda tienda = new TiendaEfectivo("","",0);
 		switch(tipoTienda) {
 		case 1:
 			nombre = getDatos("nombre");
 			direccion = getDatos("Direccion");
 			telefono = getDatos("telefono");
+			tipoPago = "efectivo";
 			if(esNumerico(telefono)) {
 				tienda = new TiendaEfectivo(nombre,direccion,Integer.parseInt(telefono)); 
 			}else {
@@ -61,6 +63,7 @@ public class interraccion {
 			nombre = getDatos("nombre");
 			direccion = getDatos("Direccion");
 			telefono = getDatos("telefono");
+			tipoPago = "tarjeta";
 			if(esNumerico(telefono)) {
 				tienda = new TiendaTarjeta(nombre,direccion,Integer.parseInt(telefono)); 
 			}else {
@@ -71,6 +74,7 @@ public class interraccion {
 			nombre = getDatos("nombre");
 			direccion = getDatos("Direccion");
 			telefono = getDatos("telefono");
+			tipoPago = "mixto";
 			if(esNumerico(telefono)) {
 				tienda = new TiendaMixta(nombre,direccion,Integer.parseInt(telefono)); 
 			}else {
@@ -92,15 +96,22 @@ public class interraccion {
 			int n = scan.nextInt();
 			switch(n) {
 			case 1:
-				tienda.agregarProducto()
+				String nombreProducto = getDatos("nombre");
+				String precio		  = getDatos("precio");
+				String cantidad		  = getDatos("cantidad");
+				tienda.agregarProducto(nombreProducto,Integer.parseInt(precio),Integer.parseInt(cantidad));
 				break;
 			case 2:
-				
+				String montoSaldo = getDatos("Monto");
+				tienda.realizarCobro(Double.parseDouble(montoSaldo));
 				break;
 			case 3:
+				String montoPago = getDatos("Realizar pago");
+				
+				tienda.realizarPago(Double.parseDouble(montoPago), tipoPago);
 				break;
 			case 4:
-				flagTerminar = false;
+				tienda.verInventario();
 				break;
 			default:
 				System.out.println("Favor de seleccionar una opcion");
