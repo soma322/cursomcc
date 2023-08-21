@@ -1,5 +1,6 @@
 package clase3;
 
+
 public class ListaLigada <T>{
 	private Nodo<T> raiz;
 	private Nodo<T> cabeza;
@@ -80,12 +81,14 @@ public class ListaLigada <T>{
 	//tarea imprimir invertir en order inverso
 	public void imprimeListaInversa() {
 		System.out.println("Imprimiendo Lista Inversa");
-		imprimeRecurInversa(this.cabeza);
+		imprimeRecurInversa(this.raiz);
 	}
 	
 	private void imprimeRecurInversa(Nodo<T> cabeza) {
-		if (cabeza == null)
+		if (cabeza == null) {
 			return;
+		}
+			
 		imprimeRecurInversa(cabeza.getEnlace());
 		System.out.println(cabeza.getDato());
 	}
@@ -148,12 +151,14 @@ public class ListaLigada <T>{
 		}
 		System.out.println(listaNueva.raiz.getDato());
 		unirListaRecur(this.raiz, listaNueva.raiz);
+		setCabeza(this.raiz);
 		
 		
 	}
 	private void unirListaRecur(Nodo<T> actual, Nodo<T> listaNueva) {
 		if (actual.getEnlace() == null) {
 			actual.setEnlace(listaNueva.getEnlace());
+			
 			return;
 		}
 		//System.out.println(listaNueva.getDato());

@@ -1,7 +1,7 @@
 package listas;
 import clase3.ListaLigada;
 import clase3.Vehiculo;
-import clase3.Nodo;
+
 public class listas {
 	
 	
@@ -41,6 +41,8 @@ public class listas {
 		lv.unirListas(lv2);
 
 		lv.imprimeLista();
+		
+		lv.imprimeListaInversa();
 		
 		
 		
