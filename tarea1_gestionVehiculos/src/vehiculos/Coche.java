@@ -1,6 +1,6 @@
 package vehiculos;
 
-public class Coche extends vehiculo{
+public class Coche extends vehiculo implements Sonido{
 	int numeroPuertas;
 	String tipoCombustible;
 	public Coche(String marca, String modelo, int numeroPuertas, String tipoCombustible) {
@@ -17,6 +17,20 @@ public class Coche extends vehiculo{
 		respuesta += " y utiliza combustible del tipo: "+ this.tipoCombustible;
 		System.out.println(respuesta);
 
+		
+	}
+
+
+	@Override
+	public void claxon() {
+		System.out.println("PI PI PI");
+		
+	}
+
+
+	@Override
+	public void alarma() {
+		System.out.println("bong bong bong");
 		
 	}
 	

@@ -1,6 +1,6 @@
 package Tienda;
 
-public class TiendaEfectivo extends Tienda {
+public class TiendaEfectivo extends Tienda implements Pago{
 	boolean efectivo = true;
 	boolean tarjeta = false;
 	double saldo;
@@ -60,6 +60,12 @@ public class TiendaEfectivo extends Tienda {
 			contador = contador + 1;
 		}
 		super.inventario.add(prod);
+		
+	}
+
+	@Override
+	public void realizarPago(double cantidad) {
+		System.out.println("Se ha realizado un pago de $" + cantidad + " en la tienda solo efectivo");
 		
 	}
 
