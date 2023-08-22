@@ -1,0 +1,9 @@
+{
+    "libros":[
+        {
+            "nombre":"La mecanica del corazon",
+            "prestadoUsuario":"",
+            "status": true
+        }
+    ]
+}
