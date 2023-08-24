@@ -20,92 +20,44 @@ public class main {
 		boolean flagTerminar = true;
 		boolean flagContinuar = false;
 		usuario datos = new usuario("","");
-		int n = 0;
-		String line = "";
 		do {
 			System.out.println("Bienvenido a la biblioteca");
 			System.out.println("Que operacion deseas realizar?");
 			System.out.println("1.- Iniciar sesion");
 			System.out.println("2.- Registrar usuario");
 			System.out.println("2.- Terminar");
-			line = scan.nextLine();
-			if(esNumerico(line)) {
+			int n = scan.nextInt();
+			switch(n) {
+			case 1:
+				json listUsuarios = new json();
+				ListaLigada<usuario> listUser = listUsuarios.leerUsuarios();
+				usuario user = inicioSesion();
+				if(listUser.buscarElemento(user)) {
+					datos = listUser.obtenerValor(user);
+					flagTerminar = false;
+					flagContinuar = true;
+				}else {
+					System.out.println("Usuario incorrecto/no existe");
+				}
+				break;
+			case 2:
+				if(!crearUsuario()) 
+					System.out.println("Usuario ya existe");
+				break;
+			case 3:
+				System.out.println("Vuelva pronto!");
 				flagTerminar = false;
+				break;
+			default:
+				System.out.println("Favor de seleccionar una opcion");
+				break;
 			}
-			
-			
 		}while(flagTerminar);
-		
-		n = Integer.parseInt(line);
-		
-		switch(n) {
-		case 1:
-			json listUsuarios = new json();
-			ListaLigada<usuario> listUser = listUsuarios.leerUsuarios();
-			usuario user = inicioSesion();
-			if(listUser.buscarElemento(user)) {
-				datos = listUser.obtenerValor(user);
-				
-				flagTerminar = false;
-				flagContinuar = true;
-			}else {
-				System.out.println("Usuario incorrecto/no existe");
-			}
-			break;
-		case 2:
-			if(!crearUsuario()) 
-				System.out.println("Usuario ya existe");
-			break;
-		case 3:
-			System.out.println("Vuelva pronto!");
-			
-			flagTerminar = false;
-		default:
-			System.out.println("Favor de seleccionar una opcion");
-			break;
-		}
-		
-		
-	
-	
 		
 		if(flagContinuar) {
 			menuBiblioteca(datos);
 		}
-		/*
-		 *  String jsonString = "{\"name\":\"John\",\"age\":30,\"isStudent\":false,\"hobbies\":[\"Reading\",\"Swimming\",\"Painting\"]}";
-
-	        JSONObject jsonObject = new JSONObject(jsonString);
-
-	        String name = jsonObject.getString("name");
-	        int age = jsonObject.getInt("age");
-	        boolean isStudent = jsonObject.getBoolean("isStudent");
-	        JSONArray hobbies = jsonObject.getJSONArray("hobbies");
-
-	        System.out.println("Name: " + name);
-	        System.out.println("Age: " + age);
-	        System.out.println("Is Student: " + isStudent);
-	        System.out.println("Hobbies: " + hobbies.toString());
-	        
-	        String jsonString_ = jsonObject.toString();
-	        saveJSONToFile(jsonString_, "output.json");
-	        */
 		
-       // listUser.imprimeLista();
-       // usuario busqueda = new usuario ("soma2","123");
-       // listUser.buscarElemento(new usuario ("soma2","123"));
-        
-        /*String name = jsonObject.getString("name");
-         * 
-         * 
-        int age = jsonObject.getInt("age");
-        boolean isStudent = jsonObject.getBoolean("isStudent");
-        JSONArray hobbies = jsonObject.getJSONArray("hobbies");
-
-        System.out.println("Name: " + name);
-        System.out.println("Age: " + age);
-        System.out.println("Is Student: " + isStudent);
-        System.out.println("Hobbies: " + hobbies.toString());*/
         
 	}
 	public static void menuBiblioteca(usuario datos) {
@@ -113,7 +65,6 @@ public class main {
 		int tipoTienda = 0;
 		boolean flagTerminar = true;
 		boolean flagContinuar = false;
-		String line = "";
 		do {
 			System.out.println("Menu biblioteca");
 			System.out.println("Que operacion deseas realizar?");
@@ -122,34 +73,29 @@ public class main {
 			System.out.println("3.- Devolver libro");
 			System.out.println("4.- Checar lista de espera");
 			System.out.println("5.- Terminar");
-			line = scan.nextLine();
-			if(esNumerico(line)) {
-				int n = Integer.parseInt(line);
-				switch(n) {
-					case 1:
-						revisarLibros();
-						break;
-					case 2:
-						rentarLibro(datos);
-						break;
-					case 3:
-						devolverLibro(datos);
-						break;
-					case 4:
-						revisarListaEspera();
-						break;
-					case 5:
-						System.out.println("Vuelva pronto!");
-						flagTerminar = false;
-						break;
-					default:
-						System.out.println("Favor de seleccionar una opcion");
-						break;
-				}
+			int n = scan.nextInt();
+			switch(n) {
+			case 1:
+				revisarLibros();
+				break;
+			case 2:
+				rentarLibro(datos);
+				break;
+			case 3:
+				devolverLibro(datos);
+				break;
+			case 4:
+				revisarListaEspera();
+				break;
+			case 5:
+				System.out.println("Vuelva pronto!");
+				flagTerminar = false;
+				break;
+			default:
+				System.out.println("Favor de seleccionar una opcion");
+				break;
 			}
-
 		}while(flagTerminar);
-		
 	}
 	
 	public static void devolverLibro(usuario usuario) {
@@ -160,10 +106,11 @@ public class main {
 		int contador = 0;
 		ListaLigada<libros> lstLibros  = jsnLibros.leerLibros();
 		ListaLigada<espera> lstEspera  = jsnLibros.leerEspera();
-		System.out.println(lstLibros.buscarElemento(new libros(0,null,usuario.usuario,false)));
+		
 		do {
 			
 			flagTieneLibros = lstLibros.buscarElemento(new libros(0,null,usuario.usuario,false));
+			
 			
 			if(flagTieneLibros) {
 				libros valorLibro = lstLibros.obtenerValor(new libros(0,null,usuario.usuario,false));
@@ -186,7 +133,7 @@ public class main {
 		        lstLibros  = jsnLibros.leerLibros();
 				lstEspera  = jsnLibros.leerEspera();
 			}else {
-				System.out.println("Usuario devolvio todos su libros o no tiene libros para devolver");
+				System.out.println(usuario.usuario+" devolvio todos su libros o no tiene libros para devolver");
 			}
 		}while(flagTieneLibros);
 		
@@ -204,10 +151,8 @@ public class main {
 		do{
 			System.out.print("Escribe el numero del libro: ");
 			int id = scan.nextInt();
-			if(lstLibros.buscarElemento(new libros(id,null,null,true))) {
-				System.out.println("libro existe");
-				libros Nlibros =  lstLibros.obtenerValor(new libros(id,null,null,true));
-				System.out.println(Nlibros.toString());
+			if(lstLibros.buscarElemento(new libros(id,null,null,false))) {
+				libros Nlibros =  lstLibros.obtenerValor(new libros(id,null,null,false));
 				if(Nlibros.status) {
 					prestarLibroUsuario(id, usuario);
 				}else {
@@ -238,22 +183,22 @@ public class main {
 		ListaLigada<libros> lstLibros  = jsnLibros.leerLibros();
 		ListaLigada<espera> lstEspera  = jsnLibros.leerEspera();
 		
-		libros valorLibro = lstLibros.obtenerValor(new libros(id,null,null,true));
-		System.out.println(valorLibro.usuario);
-		System.out.println(user.usuario);
+		libros valorLibro = lstLibros.obtenerValor(new libros(id,null,null,false));
+	
 		if(valorLibro.usuario.equals(user.usuario) ) {
-			System.out.println("Usuario tiene asignado el libro, favor de devolverlo");
+			System.out.println(user.usuario+" tiene asignado el libro, favor de devolverlo");
 			return;
 		}
 		
 		
-		System.out.println();
+
+		
 		if(!lstEspera.buscarElemento(new espera(id,null,user.usuario))){
 			JSONObject esperaListaEspera = esperaObject.getJSONObject("listaEspera");
 			String Sid = ""+id;
 			JSONArray esperaARRay = esperaListaEspera.getJSONArray(Sid);
 
-			libros libro = lstLibros.obtenerValor(new libros(id,null,null,true));
+			libros libro = lstLibros.obtenerValor(new libros(id,null,null,false));
 			JSONObject nuevo = new JSONObject();
 			
             nuevo.put("idLibro", id);
@@ -262,32 +207,14 @@ public class main {
             esperaARRay.put(nuevo);
             
             jsnLibros.guardarJson(esperaObject.toString(4),"espera.json");
-            System.out.println("Creacion de usuario exitoso");
+            System.out.println(user.usuario+ " se agrego a la lista de espera exitosamente");
 			
 			
 		}else {
 			System.out.println("Usuario ya existe en la lista de espera");
 		}
 		
-		/*
 		
-		if (lstEspera.buscarElemento(new usuario(user.usuario, null))) {
-        	return false;
-        }else {
-        	JSONObject jsonObject = new JSONObject(jsonString);
-            
-            JSONArray usuariosArray = jsonObject.getJSONArray("usuarios");
-            
-            JSONObject nuevo = new JSONObject();
-            nuevo.put("user", usuario);
-            nuevo.put("pass", contra);
-            usuariosArray.put(nuevo);
-            //
-            
-            json.guardarJson(jsonObject.toString(),fileName);
-            System.out.println("Creacion de usuario exitoso");
-            return true;
-        }*/
 		
 	}
 	public static void prestarLibroUsuario(int idLibro, usuario user) {
@@ -295,18 +222,71 @@ public class main {
 		//ListaLigada<libros> lstLibros  = jsnLibros.leerLibros();
 		String jsonString = jsnLibros.leerJson("libros.json");
         JSONObject jsonObject = new JSONObject(jsonString);
+        
+        String jsonStringEspera = jsnLibros.leerJson("espera.json");
+        JSONObject jsonObjectEspera = new JSONObject(jsonStringEspera);
+        
+        
+        
 		JSONArray librosArray = jsonObject.getJSONArray("libros");
+		ListaLigada<espera> lstEspera  = jsnLibros.leerEspera();
+		ListaLigada<libros> lstLibros  = jsnLibros.leerLibros();
+		
+		espera valorEspera = lstEspera.obtenerCabeza();
+		
+		
+		espera cabezalista = lstEspera.obtenerCabeza();
+		
+			JSONObject esperaListaEspera = jsonObjectEspera.getJSONObject("listaEspera");
+			String Sid = ""+idLibro;
+			JSONArray esperaARRay = esperaListaEspera.getJSONArray(Sid);
+            
+			if(esperaARRay.length() > 0) {
+				
+	                JSONObject userObject = esperaARRay.getJSONObject(0);
+	                
+	                if (userObject.getString("usuario").equals(user.usuario) ) {
+	                	esperaARRay.remove(0);
+	                    
+	                }else {
+	                	System.out.println(user.usuario+" no es el primero en la lista");
+	                	return;
+	                	
+	                }
+	            
+				
+				jsnLibros.guardarJson(jsonObjectEspera.toString(4),"espera.json");
+				
+				
+				 for (int i = 0; i < librosArray.length(); i++) {
+			            JSONObject libro = librosArray.getJSONObject(i);
+			            if (libro.getInt("id") == idLibro) {
+			                libro.put("usuario", user.usuario);
+			                libro.put("status", false);
+			                break;
+			            }
+			        }
+			        jsnLibros.guardarJson(jsonObject.toString(4), "libros.json");
+				return;
+			}else {
+				  for (int i = 0; i < librosArray.length(); i++) {
+			            JSONObject libro = librosArray.getJSONObject(i);
+			            if (libro.getInt("id") == idLibro) {
+			                libro.put("usuario", user.usuario);
+			                libro.put("status", false);
+			                break;
+			            }
+			        }
+			        jsnLibros.guardarJson(jsonObject.toString(4), "libros.json");
+			}
+			
+            
 
-
-        for (int i = 0; i < librosArray.length(); i++) {
-            JSONObject libro = librosArray.getJSONObject(i);
-            if (libro.getInt("id") == idLibro) {
-                libro.put("usuario", user.usuario);
-                libro.put("status", false);
-                break;
-            }
-        }
-        jsnLibros.guardarJson(jsonObject.toString(4), "libros.json");
+             // 
+			
+		
+		
+      
         
 	}
 	
@@ -363,24 +343,12 @@ public class main {
             usuariosArray.put(nuevo);
             //
             
-            json.guardarJson(jsonObject.toString(),fileName);
+            json.guardarJson(jsonObject.toString(4),fileName);
             System.out.println("Creacion de usuario exitoso");
             return true;
         }
         
 		
-	}
-	
-	public static boolean esNumerico(String cad) {
-		if (cad == null) {
-			return false;
-		}
-		try {
-			int numero = Integer.parseInt(cad); 
-		}catch (NumberFormatException x) {
-			return false;
-		}
-		return true;
 	}
 	
 	

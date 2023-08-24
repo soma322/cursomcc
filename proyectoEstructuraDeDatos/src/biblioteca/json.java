@@ -32,8 +32,10 @@ public class json {
 	    ListaLigada<usuario> listUser = new ListaLigada<usuario>();
 	
 	    if (jsonString == null) {
-	    	System.out.println("error al leer usuarios");
-	    	return listUser;
+	    	
+	        String jsonUsuarios = "{\"usuarios\": []}";
+	        json.guardarJson(jsonUsuarios, "usuarios.json");
+	    	jsonString = json.leerJson(fileName);
 	    }
 	    JSONObject jsonObject = new JSONObject(jsonString);
 	    JSONArray usuarios = jsonObject.getJSONArray("usuarios");
@@ -53,8 +55,16 @@ public class json {
 	    ListaLigada<libros> listLibros = new ListaLigada<libros>();
 	
 	    if (jsonString == null) {
-	    	System.out.println("error al leer libros.json");
-	    	return listLibros;
+	    	String jsonLibros = "{\"libros\":[" +
+	    		    "{\"usuario\":\"\",\"id\":1,\"nombre\":\"Mecanica del corazon\",\"status\":true}," +
+	    		    "{\"usuario\":\"\",\"id\":2,\"nombre\":\"Habitos Atomicos\",\"status\":true}," +
+	    		    "{\"usuario\":\"\",\"id\":3,\"nombre\":\"Gente eficiente\",\"status\":true}," +
+	    		    "{\"usuario\":\"\",\"id\":4,\"nombre\":\"Metamorfosis\",\"status\":true}," +
+	    		    "{\"usuario\":\"\",\"id\":5,\"nombre\":\"Overlord\",\"status\":true}" +
+	    		"]}";
+	    	json.guardarJson(jsonLibros, "libros.json");
+	    	jsonString = json.leerJson(fileName);
+	    	
 	    }
 	    JSONObject jsonObject = new JSONObject(jsonString);
 	    JSONArray usuarios = jsonObject.getJSONArray("libros");
@@ -75,9 +85,11 @@ public class json {
 	    ListaLigada<espera> listLibros = new ListaLigada<espera>();
 	
 	    if (jsonString == null) {
-	    	System.out.println("error al leer libros.json");
-	    	return listLibros;
+	    	String jsonEspera = "{\"listaEspera\":{\"1\":[],\"2\":[],\"3\":[],\"4\":[],\"5\":[]}}";
+		    json.guardarJson(jsonEspera, "espera.json");
+	    	jsonString = json.leerJson(fileName);
 	    }
+	    
 	    
 	    JSONObject jsonObject = new JSONObject(jsonString);
 	    JSONObject espera = jsonObject.getJSONObject("listaEspera");

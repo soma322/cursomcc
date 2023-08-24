@@ -14,7 +14,7 @@ public class espera {
 	}
 	
 	public String toString() {
-		return "Id Libro: "+this.id +"| Libro: "+this.nombreLibro+ "| Usuario: "+ this.usuario;
+		return "Libro: "+this.id +"| Libro: "+this.nombreLibro+ "| Usuario: "+ this.usuario;
 	}
 	
 	public boolean equals(Object obj) {

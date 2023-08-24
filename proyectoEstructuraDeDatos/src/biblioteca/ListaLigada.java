@@ -145,6 +145,13 @@ public class ListaLigada <T>{
 		
 	}
 	
+	public T obtenerCabeza() {
+		if(this.raiz == null) {
+			return null;
+		}
+		return this.raiz.getDato();
+	}
+	
 	public T obtenerValor(T elemento) {
 	    if (this.raiz == null) {
 	        return null; 
@@ -152,7 +159,9 @@ public class ListaLigada <T>{
 	    
 	    return obtenerValorRecur(this.raiz, elemento);
 	}
-
+	
+	
+	
 	private T obtenerValorRecur(Nodo<T> actual, T elemento) {
 	    if (actual == null) {
 	        return null; 
