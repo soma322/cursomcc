@@ -1,18 +1,20 @@
 package biblioteca;
 
 public class espera {
+	int id;
 	String nombreLibro;
-	String prestadoUsuario;
+	String usuario;
 	
 	
-	public espera (String nombreLibro, String prestadoUsuario){
+	public espera (int id,String nombreLibro, String usuario){
+		this.id = id;
 		this.nombreLibro = nombreLibro;
-		this.prestadoUsuario = prestadoUsuario;
+		this.usuario = usuario;
 		
 	}
 	
 	public String toString() {
-		return "Libro: "+this.nombreLibro + " Nombre del usuario que tiene: "+ this.prestadoUsuario;
+		return "Id Libro: "+this.id +"| Libro: "+this.nombreLibro+ "| Usuario: "+ this.usuario;
 	}
 	
 	public boolean equals(Object obj) {
@@ -23,6 +25,6 @@ public class espera {
 	        return false;
 	    }
 	    espera aux = (espera) obj;
-	    return this.nombreLibro.equals(aux.nombreLibro) && this.prestadoUsuario.equals(aux.prestadoUsuario);
+	    return this.id == aux.id && this.usuario.equals(aux.usuario);
 	}
 }

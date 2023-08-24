@@ -1,0 +1,33 @@
+{"listaEspera": {
+    "1": [{
+        "idLibro": 1,
+        "nombreLibro": "La mecanica del corazon",
+        "usuario": "soma"
+    }],
+    "2": [
+        {
+            "idLibro": 2,
+            "nombreLibro": "Habitos Atomicos",
+            "usuario": "soma"
+        },
+        {
+            "idLibro": 2,
+            "nombreLibro": "Habitos Atomicos",
+            "usuario": "soma2"
+        }
+    ],
+    "3": [],
+    "4": [
+        {
+            "idLibro": 4,
+            "nombreLibro": "Metamorfosis",
+            "usuario": "1"
+        },
+        {
+            "idLibro": 4,
+            "nombreLibro": "Metamorfosis",
+            "usuario": "ss"
+        }
+    ],
+    "5": []
+}}

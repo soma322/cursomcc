@@ -130,17 +130,41 @@ public class ListaLigada <T>{
 	}
 	//encontrar un elemento de la lista
 	private boolean buscarElementoRecur(Nodo<T> actual,T elemento) {
-		if (actual.getEnlace() == null) {
-			return false;
-		}
-		if (actual.getEnlace().getDato().equals(elemento)) {
+		
+		
+		if (actual.getDato().equals(elemento)) {
 			return true;
 		}
+		
+		if (actual.getEnlace() == null) {
+	        return false;
+	    }
 		
 		
 		return buscarElementoRecur(actual.getEnlace(),elemento);
 		
 	}
+	
+	public T obtenerValor(T elemento) {
+	    if (this.raiz == null) {
+	        return null; 
+	    }
+	    
+	    return obtenerValorRecur(this.raiz, elemento);
+	}
+
+	private T obtenerValorRecur(Nodo<T> actual, T elemento) {
+	    if (actual == null) {
+	        return null; 
+	    }
+	    
+	    if (actual.getDato().equals(elemento)) {
+	        return actual.getDato(); // Element found
+	    }
+	    
+	    return obtenerValorRecur(actual.getEnlace(), elemento);
+	}
+	
 	public void unirListas(ListaLigada<T> listaNueva) {
 		if (this.raiz == null) {
 			this.raiz = listaNueva.raiz;

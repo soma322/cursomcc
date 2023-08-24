@@ -1,9 +1,32 @@
-{
-    "libros":[
-        {
-            "nombre":"La mecanica del corazon",
-            "prestadoUsuario":"",
-            "status": true
-        }
-    ]
-}
+{"libros": [
+    {
+        "usuario": "",
+        "id": 1,
+        "nombre": "Mecanica del corazon",
+        "status": true
+    },
+    {
+        "usuario": "",
+        "id": 2,
+        "nombre": "Habitos Atomicos",
+        "status": true
+    },
+    {
+        "usuario": "",
+        "id": 3,
+        "nombre": "Gente eficiente",
+        "status": true
+    },
+    {
+        "usuario": "",
+        "id": 4,
+        "nombre": "Metamorfosis",
+        "status": true
+    },
+    {
+        "usuario": "",
+        "id": 5,
+        "nombre": "Overlord",
+        "status": true
+    }
+]}

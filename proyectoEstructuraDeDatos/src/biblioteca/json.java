@@ -61,8 +61,40 @@ public class json {
 
 	    for (int i = 0; i < usuarios.length(); i++) {
 	        JSONObject personObject = usuarios.getJSONObject(i);
-	        listLibros.insertar(new libros(personObject.getString("nombre"),personObject.getString("prestadoUsuario"),personObject.getBoolean("status")));
+	        listLibros.insertar(new libros(personObject.getInt("id"),personObject.getString("nombre"),personObject.getString("usuario"),personObject.getBoolean("status")));
 	    }
+	    return listLibros;
+    }
+	
+	
+	
+	public ListaLigada<espera> leerEspera(){
+		json json = new json();
+		String fileName = "espera.json";
+	    String jsonString = json.leerJson(fileName);
+	    ListaLigada<espera> listLibros = new ListaLigada<espera>();
+	
+	    if (jsonString == null) {
+	    	System.out.println("error al leer libros.json");
+	    	return listLibros;
+	    }
+	    
+	    JSONObject jsonObject = new JSONObject(jsonString);
+	    JSONObject espera = jsonObject.getJSONObject("listaEspera");
+	    
+	    
+	    for (String key : espera.keySet()) {
+	        JSONArray esperaArray = espera.getJSONArray(key); 
+
+	        for (int i = 0; i < esperaArray.length(); i++) {
+	            JSONObject libroObject = esperaArray.getJSONObject(i);
+	            int idLibro = libroObject.getInt("idLibro");
+	            String nombreLibro = libroObject.getString("nombreLibro");
+	            String usuario = libroObject.getString("usuario");
+	            listLibros.insertar(new espera(idLibro, nombreLibro, usuario));
+	        }
+	    }
+	  
 	    return listLibros;
     }
     
