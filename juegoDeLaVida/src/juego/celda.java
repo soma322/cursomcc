@@ -15,7 +15,7 @@ public class celda {
 		if(vida) {
 			return "[X]";
 		}else {
-			return "[ ]";
+			return "[-]";
 		}
 	}
 	

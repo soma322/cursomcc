@@ -34,7 +34,7 @@ public class tablero {
 	            for (int j = 0; j < columnas; j++) {
 	            	
 	            	if (tablero[i][j] == null) {
-	                      tablero[i][j] = new celda(false); // Initialize to a dead cell if not already initialized
+	                      tablero[i][j] = new celda(false); 
 	                }
 	            	if(random.nextBoolean() && !tablero[i][j].estaVivo() && totalVivos != contador ) {
 	            		tablero[i][j] = new celda(true);
@@ -49,7 +49,44 @@ public class tablero {
 		
 		
 	}
+	public int vecinosVivos(int fila, int columna) {
+		
+		int contador = 0;
+		//System.out.println( tablero[0].length);
+		for (int i = fila - 1; i <= fila + 1; i++) {
+            for (int j = columna - 1; j <= columna + 1; j++) {
+            	
+                if (i != fila || j != columna) { // Excluir la celda que se esta revisando
+                    if (i >= 0 && i < tablero.length && j >= 0 && j < tablero[0].length && tablero[i][j].estaVivo()) { // checa que esta dentro del tablero y si el vecino esta vivo
+                    	
+                    	
+                    	contador++;
+                    }
+                }
+            }
+        }
+		
+		return contador;
+	}
 	
+	public String toString() {
+		String respuesta = "[ ]";
+		for(int i = 0; i < filas; i++) {
+			respuesta +="["+i+"]";
+		}
+		respuesta += "\n";
+		for (int i = 0; i < filas; i++) {
+			respuesta +="["+i+"]";
+            for (int j = 0; j < columnas; j++) {   	
+            	respuesta +=tablero[i][j].toString();
+            		
+
+            }
+            respuesta += "\n";
+		}
+		
+		return respuesta;
+	}
 	public void imprimir() {
 		System.out.print("[ ]");
 		for(int i = 0; i < filas; i++) {
