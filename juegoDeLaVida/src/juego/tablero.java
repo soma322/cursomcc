@@ -14,8 +14,19 @@ public class tablero {
 	public int tamano() {
 		return (filas*columnas);
 	}
+
+	public void iniciarTableroManual(reglas valores){
+		int tamanoTablero = tamano();
+		System.out.println(tamanoTablero);
+		
+		
+		int contador = 0;
+
+		
+		
+	}
 	
-	public void iniciarTablero(int porcentajeVivos) {
+	public void iniciarTableroAutomatico(int porcentajeVivos) {
 		
 		Random random = new Random();
 		
@@ -48,6 +59,33 @@ public class tablero {
 		}while(totalVivos != contador);
 		
 		
+	}
+
+	public tablero generacion(){
+		tablero juego = new tablero(filas,columnas);
+
+		for (int i = 0; i < filas; i++) {
+				
+	            for (int j = 0; j < columnas; j++) {
+	            	
+	            	if (tablero[i][j] == null) {
+	                      tablero[i][j] = new celda(false); 
+	                }
+	            	if(!tablero[i][j].estaVivo()) {
+	            		tablero[i][j] = new celda(true);
+						vecinosVivos(i,j);
+	            		
+	            	}else{
+						
+					}
+	            	
+	            	
+	                  
+	            }
+			}
+
+
+		return juego;
 	}
 	public int vecinosVivos(int fila, int columna) {
 		

@@ -13,7 +13,7 @@ public class celda {
 	
 	public String toString() {
 		if(vida) {
-			return "[X]";
+			return "[😀]";
 		}else {
 			return "[-]";
 		}
