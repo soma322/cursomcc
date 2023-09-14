@@ -13,9 +13,9 @@ public class celda {
 	
 	public String toString() {
 		if(vida) {
-			return "[😀]";
+			return "[❤️]";
 		}else {
-			return "[-]";
+			return "[☠️]";
 		}
 	}
 	

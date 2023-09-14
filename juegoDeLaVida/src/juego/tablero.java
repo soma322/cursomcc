@@ -110,7 +110,7 @@ public class tablero {
 	public String toString() {
 		String respuesta = "[ ]";
 		for(int i = 0; i < filas; i++) {
-			respuesta +="["+i+"]";
+			respuesta +="["+i+"] ";
 		}
 		respuesta += "\n";
 		for (int i = 0; i < filas; i++) {
