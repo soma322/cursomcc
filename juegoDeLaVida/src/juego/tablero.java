@@ -224,11 +224,11 @@ public class tablero {
 
 		respuesta += "[ ]";
 		for(int i = 0; i < filas; i++) {
-			respuesta +="["+i+"] ";
+			respuesta +=" ["+i+"]";
 		}
 		respuesta += "\n";
 		for (int i = 0; i < filas; i++) {
-			respuesta +="["+i+"]";
+			respuesta +="["+i+"] ";
             for (int j = 0; j < columnas; j++) {
             	respuesta +=tablero[i][j].toString();
             		
