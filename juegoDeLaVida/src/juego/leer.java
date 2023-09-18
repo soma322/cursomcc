@@ -47,8 +47,35 @@ public class leer {
         }
         
         return res;
-        
+    }
 
+     public String leerCoordenas(String mensaje,int filas,int columnas){
+        String valor = "";
+        int var1     = 0;
+        int var2     = 0;
+        boolean flagValido = true;
+        while(flagValido) {
+        	System.out.println(mensaje);
+        	valor = scan.nextLine();
+            if(valor.length() > 2 || valor.length() < 0){
+                System.out.println("Valor invalido");
+            }
+
+        	if(esNumerico(String.valueOf(valor.charAt(0))) && esNumerico(String.valueOf(valor.charAt(1)))){
+        		var1 = Integer.parseInt(String.valueOf(valor.charAt(0)));
+                var2 = Integer.parseInt(String.valueOf(valor.charAt(1)));
+        		if (var1 >-1 && var2 >-1 && var1 <= filas && var2 <= columnas) {
+        			flagValido = false;
+        		}else {
+        			System.out.println("Valor invalido");
+        		}
+        		
+            }else {
+            	System.out.println("Favor escribir solo numeros");
+            }
+        }
+        
+        return valor;
     }
     
     public int leerInt(){

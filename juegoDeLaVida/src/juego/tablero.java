@@ -1,6 +1,5 @@
 package juego;
 import java.util.Random;
-import java.lang.Math;
 public class tablero {
 	private int filas;
 	private int columnas;
@@ -19,12 +18,29 @@ public class tablero {
 		int tamanoTablero = tamano();
 		System.out.println(tamanoTablero);
 		
+		int totalVivos = valores.totalVivos();
 		
 		int contador = 0;
+		int coorderanasLenght = valores.getCoordenadas().length;
+		String[] lstCoordenadas = valores.getCoordenadas();
+		// iniciar table con celdas false
+		for (int i = 0; i < filas; i++) {
+				
+			for (int j = 0; j < columnas; j++) {
+						tablero[i][j] = new celda(false);
+			}
+	    }
 
-		
-		
+		for(int i= 0; i<coorderanasLenght;i++){
+			if(lstCoordenadas[i] != null){
+				tablero[Integer.parseInt(String.valueOf(lstCoordenadas[i].charAt(0)))]
+					[Integer.parseInt(String.valueOf(lstCoordenadas[i].charAt(1)))] = new celda(true);
+			}
+			
+		}
+
 	}
+	
 	
 	public void iniciarTableroAutomatico(int porcentajeVivos) {
 		
@@ -115,7 +131,7 @@ public class tablero {
 		respuesta += "\n";
 		for (int i = 0; i < filas; i++) {
 			respuesta +="["+i+"]";
-            for (int j = 0; j < columnas; j++) {   	
+            for (int j = 0; j < columnas; j++) {
             	respuesta +=tablero[i][j].toString();
             		
 

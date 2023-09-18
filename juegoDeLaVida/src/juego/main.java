@@ -6,7 +6,7 @@ public class main {
 		// TODO Auto-generated method stub
 		String s = "😀";
 		System.out.println( s ) ;
-		tablero juego = new tablero(3,3);
+		
 		leer scan = new leer();
 		boolean flagTerminar = true;
 		
@@ -17,17 +17,26 @@ public class main {
 			System.out.println("2.- Automatico");
 			System.out.println("3.- Salir");
 			int n = scan.leerInt();
+			reglas reglas = escribirReglas();
 			switch(n) {
 			case 1:
-				reglas reglas = escribirReglas();
-			System.out.println(	reglas.toString());
+				
+				tablero juegoManual = new tablero(reglas.getNumFilas(),reglas.getNumColumnas());
+				reglas = capturarCoordinadas(reglas);
+				juegoManual.iniciarTableroManual(reglas);
+
+				System.out.println(juegoManual.toString());
+
 				break;
 			case 2:
-				juego.iniciarTableroAutomatico(30);
-		int totalVivos = Math.round(((float)3 / 100) * juego.tamano()); //calcular el numero de vivos en el tablero
-		System.out.println(juego.toString());
-		
-		System.out.println(juego.vecinosVivos(1, 1));
+				
+			
+				tablero juegoAuto = new tablero(reglas.getNumFilas(),reglas.getNumColumnas());
+				juegoAuto.iniciarTableroAutomatico(reglas.getOrganismosIniciales());
+				int totalVivos = Math.round(((float)3 / 100) * juegoAuto.tamano()); //calcular el numero de vivos en el tablero
+				System.out.println(juegoAuto.toString());
+				
+				System.out.println(juegoAuto.vecinosVivos(1, 1));
 				break;
 			case 3:
 				System.out.println("Vuelva pronto!");
@@ -54,6 +63,41 @@ public class main {
 		
 		return valorReglas;
 		
+	}
+
+	public static reglas capturarCoordinadas(reglas valores){
+		leer datos = new leer();
+		int tamano = valores.getNumFilas() * valores.getNumColumnas();
+		int tableroTotalVivos = valores.totalVivos();
+		int contadorOrganismos = 0;
+		int idOrganismo = 1;
+
+		do{
+			String coordenada = datos.leerCoordenas("Favor de escribir la posición fila y columna de organismo "+idOrganismo+" en un rango filas entre 0 y "+(valores.getNumFilas()-1)+ " o un rango columna entre 0 y "+(valores.getNumColumnas()-1)+ "Ejemplo: 00,01,02,etc",(valores.getNumFilas()-1),(valores.getNumColumnas()-1));
+			if(!checarCoordenada(valores,coordenada)){
+				valores.agregarCoordenadas(contadorOrganismos, coordenada);
+				contadorOrganismos++;
+			}else{
+				System.out.println("Coordenada repetida, favor de escribir una distinta");
+			}
+
+		}while(tableroTotalVivos > contadorOrganismos );
+
+
+
+		return valores;
+	}
+
+	public static boolean checarCoordenada(reglas valores, String coordenada){
+		
+		int coorderanasLenght = valores.getCoordenadas().length;
+		String[] lstCoordenadas = valores.getCoordenadas();
+		for(int i= 0; i<coorderanasLenght;i++){
+			if(coordenada.equals(lstCoordenadas[i])){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 
