@@ -1,5 +1,7 @@
 package juego;
 
+import java.util.Scanner;
+
 public class main {
 
 	public static void main(String[] args) {
@@ -9,39 +11,36 @@ public class main {
 		
 		leer scan = new leer();
 		boolean flagTerminar = true;
-		
+		reglas reglas;
+		tablero juego;
 		do {
 			System.out.println("Bienvenido al juego de vida");
 			System.out.println("Seleccione un modo:");
 			System.out.println("1.- Manual");
 			System.out.println("2.- Automatico");
-			System.out.println("3.- Salir");
+			
 			int n = scan.leerInt();
-			reglas reglas = escribirReglas();
+			reglas = escribirReglas();
+			juego = new tablero(reglas.getNumFilas(),reglas.getNumColumnas());
 			switch(n) {
 			case 1:
 				
-				tablero juegoManual = new tablero(reglas.getNumFilas(),reglas.getNumColumnas());
+				
 				reglas = capturarCoordinadas(reglas);
-				juegoManual.iniciarTableroManual(reglas);
-
-				System.out.println(juegoManual.toString());
+				juego.iniciarTableroManual(reglas);
+				flagTerminar = false;
+				
 
 				break;
 			case 2:
 				
 			
-				tablero juegoAuto = new tablero(reglas.getNumFilas(),reglas.getNumColumnas());
-				juegoAuto.iniciarTableroAutomatico(reglas.getOrganismosIniciales());
-				int totalVivos = Math.round(((float)3 / 100) * juegoAuto.tamano()); //calcular el numero de vivos en el tablero
-				System.out.println(juegoAuto.toString());
-				
-				System.out.println(juegoAuto.vecinosVivos(1, 1));
-				break;
-			case 3:
-				System.out.println("Vuelva pronto!");
+				//tablero juego = new tablero(reglas.getNumFilas(),reglas.getNumColumnas());
+				juego.iniciarTableroAutomatico(reglas.getOrganismosIniciales());
 				flagTerminar = false;
+				
 				break;
+			
 			default:
 				System.out.println("Favor de seleccionar una opcion");
 				break;
@@ -49,8 +48,70 @@ public class main {
 		}while(flagTerminar);
 
 
+		jugarJuegoDeLaVida(reglas,juego );
+
+
 		
 	}
+	
+	public static void jugarJuegoDeLaVida(reglas reglas, tablero juego){
+		int generacion = reglas.getNumGeneraciones();
+		int contadorGeneraciones = 0;
+		int contadorRepetidos = 0;
+		boolean flagGeneracion = true;
+		Scanner scanner = new Scanner(System.in);
+
+       
+
+		tablero juegoAnterior = new tablero(juego);
+		tablero juegoActual = new tablero(juego);
+		System.out.println("Inicia el juego");
+		System.out.println(juegoActual.toString());
+		System.out.println("Presiona Enter para continuar...");
+		scanner.nextLine();
+		while(flagGeneracion ){
+				
+			juegoActual = juegoActual.generacion(reglas);
+			if(juegoActual.totalVecinosVivos() == 0){
+				System.out.println("Juego terminado! Todos los organismos murieron");
+				System.out.println( juegoActual.toString());
+				flagGeneracion = false;
+				return;
+			}
+			if(juegoActual.tablerosIguales(juegoAnterior)){
+				System.out.println("contador repetidos "+contadorRepetidos);
+				contadorRepetidos++;
+				if(contadorRepetidos == 2){
+					System.out.println("Juego terminado! 2 Generaciones iguales");
+					flagGeneracion = false;
+					return;
+				}else{
+					contadorGeneraciones++;
+					System.out.println(juegoActual.toString());
+				 	System.out.println("Presiona Enter para continuar...");
+      				scanner.nextLine();
+					juegoAnterior = new tablero(juegoActual);
+				}
+				
+			}else{
+				contadorRepetidos = 0;
+				contadorGeneraciones++;
+				if(generacion < contadorGeneraciones ){
+					System.out.println("Juego terminado! Se llego al maximo de generaciones");
+					flagGeneracion = false;
+					return;
+				}
+				System.out.println(juegoActual.toString());
+				 System.out.println("Presiona Enter para continuar...");
+      			  scanner.nextLine();
+				juegoAnterior = new tablero(juegoActual);
+			}
+			
+
+		}
+
+	}
+
 	
 	public static reglas escribirReglas() {
 		leer datos = new leer();

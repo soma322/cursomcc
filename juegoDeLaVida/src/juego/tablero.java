@@ -10,6 +10,17 @@ public class tablero {
 		this.columnas = columnas;
 		this.tablero = new celda[filas][columnas];
 	}
+	public tablero(tablero original) {
+        this.filas = original.filas;
+        this.columnas = original.columnas;
+        this.tablero = new celda[filas][columnas];
+
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                this.tablero[i][j] = new celda(original.tablero[i][j].estaVivo());
+            }
+        }
+    }
 	public int tamano() {
 		return (filas*columnas);
 	}
@@ -40,6 +51,7 @@ public class tablero {
 		}
 
 	}
+
 	
 	
 	public void iniciarTableroAutomatico(int porcentajeVivos) {
@@ -77,21 +89,41 @@ public class tablero {
 		
 	}
 
-	public tablero generacion(){
-		tablero juego = new tablero(filas,columnas);
+	public void setTablero(int fila, int columna,celda cell){
+		this.tablero[fila][columna] = cell;
+	}
+
+	public tablero generacion(reglas valores){
+		tablero nuevaGeneracion = new tablero(valores.getNumFilas(),valores.getNumColumnas());
+		int vecinosVivos = 0;
+
 
 		for (int i = 0; i < filas; i++) {
 				
 	            for (int j = 0; j < columnas; j++) {
 	            	
-	            	if (tablero[i][j] == null) {
-	                      tablero[i][j] = new celda(false); 
-	                }
-	            	if(!tablero[i][j].estaVivo()) {
-	            		tablero[i][j] = new celda(true);
-						vecinosVivos(i,j);
+	            	
+					vecinosVivos = vecinosVivos(i,j);
+	            	if(tablero[i][j].estaVivo()) {
+	            		//tablero[i][j] = new celda(true);
+						
+						if(vecinosVivos < 2 || vecinosVivos > 3){ // si tiene menos de 2 o mas de 3 vecinos muere
+							nuevaGeneracion.setTablero(i, j, new celda(false));
+						}else{
+							if(vecinosVivos == 2 || vecinosVivos == 3){ // si tiene 2 o 3 vecinos vive, si no muere
+								nuevaGeneracion.setTablero(i, j, new celda(true));
+							}else{
+								nuevaGeneracion.setTablero(i, j, new celda(false));
+							}
+							
+						}
 	            		
 	            	}else{
+						if(vecinosVivos == 3){ // si esta muerto y tiene 3 vecinos entonces vive
+							nuevaGeneracion.setTablero(i, j, new celda(true));
+						}else{
+							nuevaGeneracion.setTablero(i, j, new celda(false));
+						}
 						
 					}
 	            	
@@ -101,7 +133,50 @@ public class tablero {
 			}
 
 
-		return juego;
+		return nuevaGeneracion;
+	}
+
+	
+	public boolean tablerosIguales(tablero anterior){
+		
+		
+		celda[][] tableroAnterior = anterior.getTablero();
+		for (int i = 0; i < filas; i++) {
+			
+            for (int j = 0; j < columnas; j++) {
+				
+				if(tablero[i][j].estaVivo() != tableroAnterior[i][j].estaVivo()){
+					return false;
+				}
+
+            }
+           
+		}
+		
+			return true;
+	}
+	
+	
+
+	public celda[][] getTablero(){
+		return this.tablero;
+	}
+
+	public int totalVecinosVivos(){
+		int contador = 0;
+		for (int i = 0; i < filas; i++) {
+			
+            for (int j = 0; j < columnas; j++) {
+				if(tablero[i][j].estaVivo()){
+					contador++;
+				}
+            	
+            		
+
+            }
+           // respuesta += "\n";
+		}
+		return contador;
 	}
 	public int vecinosVivos(int fila, int columna) {
 		
@@ -124,7 +199,30 @@ public class tablero {
 	}
 	
 	public String toString() {
-		String respuesta = "[ ]";
+		int contadorOrganismos = 1;
+		String StringOrganismos = "Organismos vivos en celdas: \n";
+		int totalOrganismos = 0;
+
+		for (int i = 0; i < filas; i++) {
+			
+            for (int j = 0; j < columnas; j++) {
+				if(tablero[i][j].estaVivo()){
+					StringOrganismos += "n"+contadorOrganismos+"=("+i+","+j+") ";
+					contadorOrganismos++;
+				}
+            	
+            		
+
+            }
+           // respuesta += "\n";
+		}
+		totalOrganismos = contadorOrganismos - 1;
+		String respuesta = "Filas: "+filas+" Columnas: "+columnas+" Organismos="+totalOrganismos+"\n";
+		respuesta += StringOrganismos;
+		respuesta += "\n";
+
+
+		respuesta += "[ ]";
 		for(int i = 0; i < filas; i++) {
 			respuesta +="["+i+"] ";
 		}
@@ -150,7 +248,7 @@ public class tablero {
 		
 		for (int i = 0; i < filas; i++) {
 			System.out.print("["+i+"]");
-            for (int j = 0; j < columnas; j++) {   	
+            for (int j = 0; j < columnas; j++) {
             	
             		System.out.print(tablero[i][j].toString());
 
