@@ -101,7 +101,7 @@ public class Tablero {
 
 			for (int j = 0; j < columnas; j++) {
 
-				vecinosVivos = vecinosVivosNoFor(i, j);
+				vecinosVivos = vecinosVivos(i, j);
 				
 				if (tablero[i][j].estaVivo()) {
 					// tablero[i][j] = new Celda(true);
@@ -177,9 +177,17 @@ public class Tablero {
 			for (int j = columna - 1; j <= columna + 1; j++) {
 
 				if (i != fila || j != columna) { // Excluir la Celda que se esta revisando
+					try {
+						if (tablero[i][j].estaVivo()) {
+							contador++;
+						}
+					} catch (ArrayIndexOutOfBoundsException e) {
+						
+					}
+					/* 
 					if (i >= 0 && i < tablero.length && j >= 0 && j < tablero[0].length && tablero[i][j].estaVivo()) { 
 						contador++;
-					}
+					}*/
 				}
 			}
 		}
