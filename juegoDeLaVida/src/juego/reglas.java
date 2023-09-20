@@ -1,13 +1,13 @@
 package juego;
 
-public class reglas {
+public class Reglas {
     private int numFilas;
     private int numColumnas;
     private int numGeneraciones;
     private int organismosIniciales;
     private String[] coordenadas;
 
-    public reglas (int numFilas, int numColumnas, int numGeneraciones,int organismosIniciales){
+    public Reglas (int numFilas, int numColumnas, int numGeneraciones,int organismosIniciales){
         this.numFilas = numFilas;
         this.numColumnas = numColumnas;
         this.numGeneraciones = numGeneraciones;
@@ -23,6 +23,21 @@ public class reglas {
     public int totalVivos(){
         int totalVivos = Math.round(((float)this.organismosIniciales / 100) * (this.numFilas*this.numColumnas));
         return totalVivos;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
     }
 

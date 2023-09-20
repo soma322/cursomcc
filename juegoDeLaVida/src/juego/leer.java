@@ -1,9 +1,9 @@
 package juego;
 import java.util.Scanner;
-public class leer {
+public class Leer {
     private Scanner scan;
 
-    public leer(){
+    public Leer(){
         this.scan = new Scanner(System.in);
     }
 
@@ -54,25 +54,40 @@ public class leer {
         int var1     = 0;
         int var2     = 0;
         boolean flagValido = true;
+        int commaCount = 0;
+        
         while(flagValido) {
         	System.out.println(mensaje);
         	valor = scan.nextLine();
-            if(valor.length() > 2 || valor.length() < 0){
+
+            for (int i = 0; i < valor.length(); i++) {
+                if (valor.charAt(i) == ',') {
+                    commaCount++;
+                }
+            }
+            if (commaCount == 1 ){
+                String[] parts = valor.split(",");
+                if(parts.length == 2){
+                    
+
+                    if(esNumerico(parts[0]) && esNumerico(parts[1])){
+                    var1 = Integer.parseInt(parts[0]);
+                    var2 = Integer.parseInt(parts[1]);
+                    if (var1 >=0 && var2 >=0 && var1 <= filas && var2 <= columnas) {
+                        flagValido = false;
+                    }
+                    
+                    }else {
+                        System.out.println("Favor escribir solo numeros");
+                    }
+                }
+                
+            }
+            if(flagValido){
                 System.out.println("Valor invalido");
             }
-
-        	if(esNumerico(String.valueOf(valor.charAt(0))) && esNumerico(String.valueOf(valor.charAt(1)))){
-        		var1 = Integer.parseInt(String.valueOf(valor.charAt(0)));
-                var2 = Integer.parseInt(String.valueOf(valor.charAt(1)));
-        		if (var1 >-1 && var2 >-1 && var1 <= filas && var2 <= columnas) {
-        			flagValido = false;
-        		}else {
-        			System.out.println("Valor invalido");
-        		}
-        		
-            }else {
-            	System.out.println("Favor escribir solo numeros");
-            }
+            commaCount = 0;
+        	
         }
         
         return valor;

@@ -1,9 +1,9 @@
 package juego;
 
-public class celda {
+public class Celda {
 	private boolean vida = false;
 	
-	public celda (boolean vida) {
+	public Celda (boolean vida) {
 		this.vida = vida;
 	}
 	
