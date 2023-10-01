@@ -4,7 +4,7 @@ public class Main {
 	public static void main(String[] args) {
    // Cartas carta = new Cartas(EnumCarta.AS);
     
-   Baraja baraja = new Baraja();
+   Baraja baraja = new Baraja("blackjack");
 
    System.out.println(baraja.toString());
    /*

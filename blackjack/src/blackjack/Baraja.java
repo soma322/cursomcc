@@ -1,25 +1,49 @@
 package blackjack;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 public class Baraja {
-    private List<Cartas> cartas;
+    private ArrayList<Cartas> cartas;
     
-    public Baraja() {
-    	cartas = new ArrayList<>();
-        EnumCartaBlackJack[] cartaValues = EnumCartaBlackJack.values();
-        String[] tipoCartas = {"♠","♥","♦","♣"};
-        for (int i = 0; i < tipoCartas.length; i++) {
-            for (EnumCartaBlackJack carta : cartaValues) {
-               
-                this.cartas.add(new Cartas(carta.getNombre(), carta.getValor(), tipoCartas[i]));
-            }
+    public Baraja(String juego) {
+    	cartas = new ArrayList<Cartas>(); // inicializar baraja
+        EnumCartas.simboloCartas[] simbolo = EnumCartas.simboloCartas.values();
+
+        switch (juego) {
+                case "blackjack":
+                    EnumCartas.blackjack[] cartaValues = EnumCartas.blackjack.values();
+                    for (int i = 0; i < simbolo.length; i++) {
+                        for (int j = 0; j < cartaValues.length; j++ ) {
+                        
+                            this.cartas.add(new Cartas(cartaValues[j].getNombre(), cartaValues[j].getValor(), simbolo[i].getSimbolo() ));
+                        }
+                    }
+
+                     break;
+                default:
+                  throw new IllegalArgumentException("juego invalido: " + juego);
+                  
         }
-       
+        barajearBaraja();
+
+
     }
-    
-    public EnumCartaBlackJack juego() {
-    	
+
+    public void barajearBaraja(){
+        Collections.shuffle(cartas);
+    }
+
+    public Cartas cartaTopeBaraja(){
+        Cartas carta = null;
+        try {
+            carta = cartas.remove(0);
+        } catch (Exception e) {
+           // si truena significa que no hay mas cartas
+        }
+
+
+        return carta;
+
     }
 
     public String toString(){
