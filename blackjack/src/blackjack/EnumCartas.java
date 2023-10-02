@@ -19,10 +19,8 @@ public class EnumCartas {
 
 			public String getSimbolo() {
 				return simbolo;
-			}
-
-		
-		}
+			}	
+	}
 
 	public enum blackjack{
 		AS("AS", 1),

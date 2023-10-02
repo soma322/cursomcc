@@ -11,6 +11,8 @@ public class Cartas {
         this.tipoCarta = tipoCarta;
     }
 
+    
+
     public String getCarta() {
         return this.carta;
     }

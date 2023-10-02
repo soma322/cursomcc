@@ -9,7 +9,6 @@ public class Leer {
 
     public int leerReglas(String mensaje){
         String valor = "";
-        int res      = 0;
         boolean flagValido = true;
         while(flagValido) {
         	System.out.println(mensaje);
@@ -24,6 +23,12 @@ public class Leer {
         return Integer.parseInt(valor);
         
 
+    }
+
+    public String leerString(String mensaje){
+        System.out.println(mensaje);
+        String valor = scan.nextLine();
+        return valor;
     }
     
     public int leerReglas(String mensaje,int minimo,int maximo){
@@ -92,7 +97,23 @@ public class Leer {
         
         return valor;
     }
-    
+    public int leerInt(String mensaje){
+        String valor = scan.nextLine();
+        int res      = 0;
+        boolean flagTerminar = true;
+        while (flagTerminar) {
+            System.out.println(mensaje);
+            if(esNumerico(valor)){
+                res = Integer.parseInt(valor);
+                flagTerminar = false;
+            }else{
+                System.out.println("Favor de escribir solo valores numericos");
+            }
+        }
+        
+        return res;
+
+    }
     public int leerInt(){
         String valor = scan.nextLine();
         int res      = 0;

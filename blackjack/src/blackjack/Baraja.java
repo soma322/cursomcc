@@ -4,12 +4,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 public class Baraja {
     private ArrayList<Cartas> cartas;
+    private String juego;
     
     public Baraja(String juego) {
     	cartas = new ArrayList<Cartas>(); // inicializar baraja
+        this.juego = juego;
+        nuevaBaraja();
+        barajearBaraja();
+    }
+
+    public void nuevaBaraja(){
         EnumCartas.simboloCartas[] simbolo = EnumCartas.simboloCartas.values();
 
-        switch (juego) {
+        switch (this.juego) {
                 case "blackjack":
                     EnumCartas.blackjack[] cartaValues = EnumCartas.blackjack.values();
                     for (int i = 0; i < simbolo.length; i++) {
@@ -24,9 +31,6 @@ public class Baraja {
                   throw new IllegalArgumentException("juego invalido: " + juego);
                   
         }
-        barajearBaraja();
-
-
     }
 
     public void barajearBaraja(){
@@ -40,10 +44,7 @@ public class Baraja {
         } catch (Exception e) {
            // si truena significa que no hay mas cartas
         }
-
-
         return carta;
-
     }
 
     public String toString(){

@@ -2,15 +2,58 @@ package blackjack;
 
 import java.util.ArrayList;
 
-public class jugador {
-    String Nombre;
-    ArrayList<Cartas> mano;
-    int saldo;
+public class Jugador {
+    private String nombre;
+    protected String rol;
+    protected ArrayList<Cartas> mano;
+    private int saldo;
+    private int apuesta;
 
-    public jugador(String nombre,int saldo){
-        this.Nombre = nombre;
-        this.mano = new ArrayList<Cartas>();
+    public Jugador(String nombre,int saldo){
+        this.nombre = nombre;
+        this.mano  = new ArrayList<Cartas>();
         this.saldo = saldo;
+        this.rol   = "Jugador";
+    }
+     public Jugador(String nombre){
+        this.nombre = nombre;
+        this.mano  = new ArrayList<Cartas>();
+        this.saldo = 0;
+        this.rol   = "Jugador";
+    }
+
+
+    public void setApuesta(int apuesta){
+        this.apuesta = apuesta;
+
+    }
+    public int getApuesta(){
+        return this.apuesta;
+    }
+    public String getNombre(){
+        return this.nombre;
+    }
+
+    public ArrayList<Cartas> getMano(){
+        return this.mano;
+    }
+    public String getRol(){
+        return this.rol;
+    }
+    public int getSaldo(){
+        return this.saldo;
+    }
+    public void ganar(){
+        
+        saldo = saldo + (int)Math.round(apuesta * 1.5);
+        apuesta = 0;
+    }
+    public void perder(){
+        saldo = saldo - apuesta;
+        apuesta = 0;
+    }
+    public void empate(){
+        apuesta = 0;
     }
 
     public void agregarCarta(Cartas carta){
@@ -21,15 +64,25 @@ public class jugador {
         mano.clear();
     }
 
-    public String toString(){
-        String respuesta = this.Nombre+":  [";
+    public void restarSaldoJugador(int saldo){
+        this.saldo = this.saldo - saldo;
+    }
+
+    public String toString(boolean revelarCarta){
+        String respuesta = this.rol+": "+this.nombre+"  [";
 
         for (Cartas cartas : mano) {
-            respuesta += mano.get(0).getCarta()+ mano.get(0).getTipoCarta();
+            if (revelarCarta) {
+                respuesta += "Carta oculta";
+                revelarCarta = false;
+                continue;
+            }
+            respuesta += cartas.getTipoCarta()+ cartas.getCarta();
             respuesta += " ";
+           
         }
 
-        respuesta += " ]";
+        respuesta += "]";
 
 
         
@@ -41,24 +94,7 @@ public class jugador {
     }
     
 
-    public int puntuajeEnMano(){
-        int puntuaje = 0;
-        boolean ace = false;
-        for (Cartas cartas : mano) {
-            if(mano.get(0).getValor() == 1){
-                ace = true;
-            }
-            puntuaje = puntuaje + mano.get(0).getValor();
-        }
-
-        if(puntuaje <= 10 && ace){
-            puntuaje = puntuaje + 10;
-        }
-
-        
-        return puntuaje;
-
-    }
+    
 
 
 
