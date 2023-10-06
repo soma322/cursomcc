@@ -4,7 +4,24 @@ public class Main {
 	public static void main(String[] args) {
    // Cartas carta = new Cartas(EnumCarta.AS);
    boolean flagTerminar = true;
-   
+   /*
+    Baraja deck = new Baraja("blackjack");
+    Croupier master = new Croupier();
+    Jugador jugador = new Jugador("soma",100);
+    
+    while(flagTerminar){
+        try {
+            master.darCartaJugador(deck, jugador);
+            System.out.println(deck.cantidadCartas());
+            System.out.println(jugador.toString(false));
+            System.out.println("Di carta a jugador");
+        } catch (Exception e) {
+            System.out.println("Trone");
+            flagTerminar = false;
+        }
+    }*/
+    
+
    Leer scan = new Leer();
     do {
         System.out.println("Bienvenido al casino! ");
@@ -52,22 +69,33 @@ public class Main {
                     juego.darCarta(player);
                     System.out.println(player.toString(false) + " puntuaje: "+juego.calcularPuntuaje(player));
                 }
-                //System.out.println("Jugador decidio quedarse!");
-                //System.out.println(player.toString(false) + " puntuaje: "+juego.calcularPuntuaje(player));
+               
 
+            }
+
+            System.out.println("----------------");
+            System.out.println("");
+
+            if(juego.esBlackjack(juego.getCroupier())){
+                    System.out.println(juego.getCroupier().toString(false)+ " puntuaje: "+juego.calcularPuntuaje(juego.getCroupier()));
+                    System.out.println("Croupier tiene Blackjack natural! Croupier Gana");
+                    juego.checarEmpateBlackjackNatural();
+                    juego.restarSaldoJugadores();
+                    continue;
             }
              //turno del dealer
             juego.croupierJuega();
             System.out.println(juego.getCroupier().toString(false)+ " puntuaje: "+juego.calcularPuntuaje(juego.getCroupier()) );
-            if(juego.esBlackjack(juego.getCroupier())){
-                    System.out.println(juego.getCroupier().toString(false)+ " puntuaje: "+juego.calcularPuntuaje(juego.getCroupier()));
-                    System.out.println("Croupier tiene Blackjack! Croupier Gana");
-                    juego.checarEmpateBlackjack();
-                    juego.restarSaldoJugadores();
-                    continue;
+            
+            for(Jugador player: juego.getJugadores()) {
+                    System.out.println(player.toString(false) + " puntuaje: "+juego.calcularPuntuaje(player));
             }
+            System.out.println("----------------");
+            System.out.println("");
+
             try {
                 for(Jugador player: juego.getJugadores()) {
+                    System.out.println(player.toString(false) + " puntuaje: "+juego.calcularPuntuaje(player));
 
                 if (juego.calcularPuntuaje(juego.getCroupier()) == juego.calcularPuntuaje(player)) {
                     System.out.println("Jugador: "+player.getNombre()+ " empato con el  Croupier");
@@ -94,7 +122,8 @@ public class Main {
                     juego.eliminarJugador(player);
                 }
 
-
+                System.out.println("----------------");
+                System.out.println("");
             }
            
             } catch (Exception e) {

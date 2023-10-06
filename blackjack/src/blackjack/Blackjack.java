@@ -46,6 +46,10 @@ public class Blackjack {
 
     }
 
+    public void setBaraja(Baraja baraja){
+        this.baraja = baraja;
+    }
+
 
     public void iniciarJuego(){
          for (Jugador player : jugador){
@@ -62,24 +66,30 @@ public class Blackjack {
     }
 
     public int calcularPuntuaje(Jugador jugador){
-        int puntuaje = 0;
-        boolean ace = false;
-        for (Cartas cartas : jugador.getMano()) {
-            if(cartas.getValor() == 1){
-                ace = true;
+         int puntuaje = 0;
+            boolean ace = false;
+        try {
+           
+            for (Cartas cartas : jugador.getMano()) {
+                if(cartas.getValor() == 1){
+                    ace = true;
+                }
+                puntuaje = puntuaje + cartas.getValor();
             }
-            puntuaje = puntuaje + cartas.getValor();
-        }
 
-        if(puntuaje <= 10 && ace){
-            puntuaje = puntuaje + 10;
+            if(puntuaje <= 11 && ace){
+                puntuaje = puntuaje + 10;
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
         }
+        
 
         
         return puntuaje;
 
     }
-   
+     
     public Croupier getCroupier(){
         return this.croupier;
     }
@@ -98,8 +108,9 @@ public class Blackjack {
                 croupier.agregarCarta(baraja.cartaTopeBaraja());
              } catch (Exception e) {
                 // Se acabo la baraja
-                baraja.nuevaBaraja();
-                baraja.barajearBaraja();
+                
+
+                baraja = new Baraja(getJuego());
                 croupier.agregarCarta(baraja.cartaTopeBaraja());
 
              }
@@ -111,12 +122,18 @@ public class Blackjack {
    
     public void restarSaldoJugadores(){
         for(Jugador player: jugador){
-            player.perder();
+            if(player.getApuesta() != 0){
+                System.out.println("Jugador:"+player.getNombre() + " pierde contra blackjack natural del dealer!");
+                player.perder();
+            }
+            
+            
         }
     }
-    public void checarEmpateBlackjack(){
+    public void checarEmpateBlackjackNatural(){
          for(Jugador player: jugador){
-            if (esBlackjack(player)) {
+            if (esBlackjack(player) && player.cantidadCartas() == 2) {
+                System.out.println("Jugador:"+player.getNombre() + " tambien tiene blackjack natural! Empata con dealer");
                 player.empate();
             }
         }
@@ -132,28 +149,34 @@ public class Blackjack {
 
     public String toString(boolean revelarCarta){
         String respuesta ="";
-        boolean revelarCartaCroupier = revelarCarta;
+        boolean flagAux = revelarCarta;
         respuesta += croupier.getRol()+": "+croupier.getNombre()+"  [";
+        int aux = 0;
         for (Cartas cartas : croupier.getMano()) {
-             if (revelarCartaCroupier) {
+             if (flagAux && aux == 0) {
                     respuesta += "OCULTA ";
-                    revelarCartaCroupier = false;
+                    flagAux = false;
+                    aux++;
                     continue;
                 }
                 respuesta += cartas.getTipoCarta()+ cartas.getCarta();
                 respuesta += " ";
 
         }
+        flagAux = revelarCarta;
+        aux = 0;
 
         respuesta += " ]";
         respuesta +="\n";
         for(Jugador player: jugador){
+            
             respuesta +=  player.getRol()+": "+player.getNombre()+"  [";
             
             for (Cartas cartas : player.getMano()) {
-                if (revelarCarta) {
+                if (flagAux && aux == 0) {
                     respuesta += "OCULTA ";
-                    revelarCarta = false;
+                    flagAux = false;
+                    aux++;
                     continue;
                 }
                 respuesta += cartas.getTipoCarta()+ cartas.getCarta();
@@ -163,6 +186,8 @@ public class Blackjack {
 
             respuesta += " ]";
             respuesta +="\n";
+            aux = 0;
+            flagAux = revelarCarta;
         }
         return respuesta;
     }

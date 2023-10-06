@@ -13,7 +13,7 @@ public class Baraja {
         barajearBaraja();
     }
 
-    public void nuevaBaraja(){
+    private void nuevaBaraja(){
         EnumCartas.simboloCartas[] simbolo = EnumCartas.simboloCartas.values();
 
         switch (this.juego) {
