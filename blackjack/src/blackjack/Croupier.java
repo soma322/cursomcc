@@ -8,32 +8,36 @@ public class Croupier extends Jugador{
         
     }
 
-    public void repartirInicioJugador(Baraja baraja, Jugador jugador){
-        int repartir = 0;
+    public int repartirInicioJugador(Baraja baraja, Jugador jugador, int repartir){
         do{
-             try {
-                jugador.agregarCarta(baraja.cartaTopeBaraja());
-             } catch (Exception e) {
-                // Se acabo la baraja
-                baraja.nuevaBaraja();
-                baraja.barajearBaraja();
-                jugador.agregarCarta(baraja.cartaTopeBaraja());
-
-             }
+            
+                Cartas carta = baraja.cartaTopeBaraja();
+               
+                if(carta != null){
+                    jugador.agregarCarta(baraja.cartaTopeBaraja());
+                }else{
+                   return repartir;
+                }
+               
+             
              repartir++;
         }while(repartir < 2);
-    }
-    public void darCartaJugador(Baraja baraja, Jugador jugador){
+        repartir = 0;
+        return repartir;
         
-        try {
-            jugador.agregarCarta(baraja.cartaTopeBaraja());
-        } catch (Exception e) {
-            // Se acabo la baraja
-            baraja.nuevaBaraja();
-            baraja.barajearBaraja();
-            jugador.agregarCarta(baraja.cartaTopeBaraja());
 
+    }
+    public boolean darCartaJugador(Baraja baraja, Jugador jugador){
+        boolean res = true;
+        Cartas carta = baraja.cartaTopeBaraja();
+        if(carta != null){
+              jugador.agregarCarta(carta);
+        }else{
+            res = false;
         }
+          
+       
+        return res;
             
         
     }

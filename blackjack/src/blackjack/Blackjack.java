@@ -15,7 +15,23 @@ public class Blackjack {
     }
 
     public void darCarta(Jugador player){
-        croupier.darCartaJugador(baraja, player);
+        if(!croupier.darCartaJugador(baraja, player)){
+            System.out.println("nueva baraja");
+            setBaraja(new Baraja(baraja.getJuego()));
+            croupier.darCartaJugador(baraja, player);
+        }
+    }
+
+    public void jugadorJuega(){
+        for(Jugador player: jugador) {
+            System.out.println(player.toString(false) + "puntuaje: "+calcularPuntuaje(player));
+            while (calcularPuntuaje(player) < 21 && pedirQuedarse(player)){
+                darCarta(player);
+                System.out.println(player.toString(false) + " puntuaje: "+calcularPuntuaje(player));
+            }
+           
+
+        }
     }
 
     public boolean pedirQuedarse(Jugador jugador) {
@@ -52,12 +68,37 @@ public class Blackjack {
 
 
     public void iniciarJuego(){
+        int repartir = 0;
          for (Jugador player : jugador){
+            
             player.limpiarMano();
-            this.croupier.repartirInicioJugador(this.baraja,player);
+            do{
+                darCarta(player);
+                repartir++;
+            }while(repartir <2);
+            
+           /*
+            repartir = this.croupier.repartirInicioJugador(this.baraja,player,repartir);
+            if(repartir != 2){
+                setBaraja(new Baraja(baraja.getJuego()));
+                this.croupier.repartirInicioJugador(this.baraja,player,repartir);
+            }
+            repartir = 0;
+            */
          }
-         this.croupier.limpiarMano();
-         this.croupier.repartirInicioJugador(this.baraja,this.croupier);
+         repartir = 0;
+
+        this.croupier.limpiarMano();
+         do{
+                darCarta(this.croupier);
+                repartir++;
+            }while(repartir <2);
+         /*    
+        repartir = this.croupier.repartirInicioJugador(this.baraja,this.croupier,repartir);
+        if(repartir != 2){
+            setBaraja(new Baraja(baraja.getJuego()));
+            this.croupier.repartirInicioJugador(this.baraja,this.croupier,repartir);
+        }*/
     }
     public void apostarJugador(Jugador jugador){
         Leer scan = new Leer();
@@ -104,16 +145,15 @@ public class Blackjack {
 
         
 		while (calcularPuntuaje(croupier) <= 16) {
-            try {
-                croupier.agregarCarta(baraja.cartaTopeBaraja());
-             } catch (Exception e) {
-                // Se acabo la baraja
-                
-
-                baraja = new Baraja(getJuego());
-                croupier.agregarCarta(baraja.cartaTopeBaraja());
-
-             }
+            
+                Cartas carta = baraja.cartaTopeBaraja();
+                if (carta != null) {
+                    croupier.agregarCarta(carta);
+                }else{
+                    setBaraja(new Baraja(baraja.getJuego()));
+                    croupier.agregarCarta(baraja.cartaTopeBaraja());
+                    
+                }
 			
 		}
         return calcularPuntuaje(croupier);

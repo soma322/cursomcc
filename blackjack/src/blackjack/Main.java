@@ -55,7 +55,7 @@ public class Main {
        
         
         while ( juego.cantidadJugadores() > 0) {
-            juego.iniciarJuego();
+                juego.iniciarJuego();
 
             System.out.println(juego.toString(true));
             for(Jugador player: juego.getJugadores()) { // jugadores apuestan
@@ -63,6 +63,7 @@ public class Main {
             }
            
             //turn jugador
+            /* 
             for(Jugador player: juego.getJugadores()) {
                 System.out.println(player.toString(false) + "puntuaje: "+juego.calcularPuntuaje(player));
                 while (juego.calcularPuntuaje(player) < 21 && juego.pedirQuedarse(player)){
@@ -71,8 +72,8 @@ public class Main {
                 }
                
 
-            }
-
+            }*/
+            juego.jugadorJuega();
             System.out.println("----------------");
             System.out.println("");
 
@@ -129,6 +130,8 @@ public class Main {
             } catch (Exception e) {
                 // TODO: handle exception
             }
+                
+        
             
             
             

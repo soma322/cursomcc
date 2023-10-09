@@ -33,6 +33,9 @@ public class Baraja {
         }
     }
 
+    public String getJuego(){
+        return this.juego;
+    }
     public void barajearBaraja(){
         Collections.shuffle(cartas);
     }
@@ -40,7 +43,8 @@ public class Baraja {
     public Cartas cartaTopeBaraja(){
         Cartas carta = null;
         try {
-            carta = cartas.remove(0);
+            carta = cartas.remove(cartas.size() - 1);
+            
         } catch (Exception e) {
            // si truena significa que no hay mas cartas
         }
