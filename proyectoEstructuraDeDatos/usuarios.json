@@ -1,4 +1,14 @@
-{"usuarios": [{
-    "pass": "123",
-    "user": "soma"
-}]}
+{
+    "usuarios": [
+        {
+            "pass": "123",
+            "user": "soma"
+        }
+    ],
+	"libros": [
+        {
+            "pass": "123",
+            "user": "soma"
+        }
+    ]
+}

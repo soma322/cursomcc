@@ -19,7 +19,7 @@ public class Jugador {
         this.nombre = nombre;
         this.mano  = new ArrayList<Cartas>();
         this.saldo = 0;
-        this.rol   = "Jugador";
+        this.rol   = "Croupier";
     }
 
 

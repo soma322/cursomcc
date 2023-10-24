@@ -62,17 +62,7 @@ public class Main {
                 juego.apostarJugador(player);
             }
            
-            //turn jugador
-            /* 
-            for(Jugador player: juego.getJugadores()) {
-                System.out.println(player.toString(false) + "puntuaje: "+juego.calcularPuntuaje(player));
-                while (juego.calcularPuntuaje(player) < 21 && juego.pedirQuedarse(player)){
-                    juego.darCarta(player);
-                    System.out.println(player.toString(false) + " puntuaje: "+juego.calcularPuntuaje(player));
-                }
-               
-
-            }*/
+           
             juego.jugadorJuega();
             System.out.println("----------------");
             System.out.println("");
@@ -86,9 +76,12 @@ public class Main {
             }
              //turno del dealer
             juego.croupierJuega();
+
+            //imprime mano croupier
             System.out.println(juego.getCroupier().toString(false)+ " puntuaje: "+juego.calcularPuntuaje(juego.getCroupier()) );
             
             for(Jugador player: juego.getJugadores()) {
+                    //imprime mano jugador
                     System.out.println(player.toString(false) + " puntuaje: "+juego.calcularPuntuaje(player));
             }
             System.out.println("----------------");

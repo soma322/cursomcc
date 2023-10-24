@@ -77,14 +77,7 @@ public class Blackjack {
                 repartir++;
             }while(repartir <2);
             
-           /*
-            repartir = this.croupier.repartirInicioJugador(this.baraja,player,repartir);
-            if(repartir != 2){
-                setBaraja(new Baraja(baraja.getJuego()));
-                this.croupier.repartirInicioJugador(this.baraja,player,repartir);
-            }
-            repartir = 0;
-            */
+         
          }
          repartir = 0;
 
@@ -93,12 +86,7 @@ public class Blackjack {
                 darCarta(this.croupier);
                 repartir++;
             }while(repartir <2);
-         /*    
-        repartir = this.croupier.repartirInicioJugador(this.baraja,this.croupier,repartir);
-        if(repartir != 2){
-            setBaraja(new Baraja(baraja.getJuego()));
-            this.croupier.repartirInicioJugador(this.baraja,this.croupier,repartir);
-        }*/
+         
     }
     public void apostarJugador(Jugador jugador){
         Leer scan = new Leer();
@@ -122,7 +110,7 @@ public class Blackjack {
                 puntuaje = puntuaje + 10;
             }
         } catch (Exception e) {
-            // TODO: handle exception
+            
         }
         
 
