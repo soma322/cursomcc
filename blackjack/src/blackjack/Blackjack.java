@@ -70,22 +70,18 @@ public class Blackjack {
     public void iniciarJuego(){
         int repartir = 0;
          for (Jugador player : jugador){
-            
-            player.limpiarMano();
-            do{
-                darCarta(player);
-                repartir++;
-            }while(repartir <2);
+           
+           player.limpiarMano();
+           darCarta(player);
+           darCarta(player);
             
          
          }
          repartir = 0;
 
         this.croupier.limpiarMano();
-         do{
-                darCarta(this.croupier);
-                repartir++;
-            }while(repartir <2);
+        darCarta(this.croupier);
+        darCarta(this.croupier);
          
     }
     public void apostarJugador(Jugador jugador){

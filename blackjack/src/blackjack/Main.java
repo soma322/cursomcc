@@ -91,20 +91,20 @@ public class Main {
                 for(Jugador player: juego.getJugadores()) {
                     System.out.println(player.toString(false) + " puntuaje: "+juego.calcularPuntuaje(player));
 
-                if (juego.calcularPuntuaje(juego.getCroupier()) == juego.calcularPuntuaje(player)) {
+                if ((juego.calcularPuntuaje(juego.getCroupier()) == juego.calcularPuntuaje(player)) && (juego.calcularPuntuaje(juego.getCroupier()) <= 21 && juego.calcularPuntuaje(player) <= 21)) {
                     System.out.println("Jugador: "+player.getNombre()+ " empato con el  Croupier");
                     System.out.println("Puntuaje: "+player.getNombre()+":"+juego.calcularPuntuaje(player));
                     System.out.println("Puntuaje: "+juego.getCroupier().getNombre()+":"+juego.calcularPuntuaje(juego.getCroupier()));
                     player.empate();
                 }
                 
-                if(juego.calcularPuntuaje(juego.getCroupier()) < juego.calcularPuntuaje(player) && juego.calcularPuntuaje(player) <= 21 || juego.calcularPuntuaje(juego.getCroupier())>21){
+                if(((juego.calcularPuntuaje(juego.getCroupier()) < juego.calcularPuntuaje(player)) || (juego.calcularPuntuaje(player) <= 21 && juego.calcularPuntuaje(juego.getCroupier())>21)) && juego.calcularPuntuaje(player) <= 21){
                     System.out.println("Jugador: "+player.getNombre()+ " gano!");
                     System.out.println("Puntuaje: "+player.getNombre()+":"+juego.calcularPuntuaje(player));
                     System.out.println("Puntuaje: "+juego.getCroupier().getNombre()+":"+juego.calcularPuntuaje(juego.getCroupier()));
                     player.ganar();
                 }
-                if(juego.calcularPuntuaje(juego.getCroupier()) > juego.calcularPuntuaje(player)  && juego.calcularPuntuaje(juego.getCroupier()) <= 21 || juego.calcularPuntuaje(player)>21 ){
+                if(((juego.calcularPuntuaje(juego.getCroupier()) > juego.calcularPuntuaje(player))  || juego.calcularPuntuaje(player) > 21) ){
                     System.out.println("Jugador: "+player.getNombre()+ " perdio!");
                     System.out.println("Puntuaje: "+player.getNombre()+":"+juego.calcularPuntuaje(player));
                     System.out.println("Puntuaje: "+juego.getCroupier().getNombre()+":"+juego.calcularPuntuaje(juego.getCroupier()));
