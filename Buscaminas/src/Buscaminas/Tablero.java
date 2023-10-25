@@ -1,6 +1,7 @@
 package Buscaminas;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 enum Dificultad {
@@ -117,6 +118,25 @@ public class Tablero {
 
 		
 	}
+
+	private void actualizarNumeroMinasAlrededor(){
+
+		for (int i = -1; i <= 1; i++) {
+				for (int j = -1; j <= 1; j++) {
+					if (i != 0 || j != 0) { // Evitar la celda actual.
+						bombasVecinas += seleccionarCelda(fila + i, columna + j);
+					}
+				}
+			}
+        for (int i = 0; i < casillas.length; i++) {
+            for (int j = 0; j < casillas[i].length; j++) {
+                if (casillas[i][j].isMina()){
+                    List<Casilla> casillasAlrededor=obtenerCasillasAlrededor(i, j);
+                    casillasAlrededor.forEach((c)->c.incrementarNumeroMinasAlrededor());
+                }
+            }
+        }
+    }
 
 
 
