@@ -1,4 +1,4 @@
-package juego;
+package Buscaminas;
 import java.util.Scanner;
 public class Leer {
     private Scanner scan;

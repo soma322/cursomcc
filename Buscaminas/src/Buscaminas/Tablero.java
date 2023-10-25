@@ -1,154 +1,125 @@
-package juego;
+package Buscaminas;
 
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.stream.IntStream;
+
+enum Dificultad {
+	PRINCIPIANTE,BASICO,MEDIO,AVANZADO;
+};
 
 public class Tablero {
 	private int filas;
 	private int columnas;
 	private Celda[][] tablero;
-
-	public Tablero(int filas, int columnas) { // constructor del tablero inicial
-		this.filas = filas;
-		this.columnas = columnas;
+	private ArrayList<Celda> CeldasAlrededor;
+	private int minas;
+	private int minasActivas;
+	private Random random;
+	public Tablero(Dificultad nivel) { // constructor del tablero inicial
+		escogerNivel(nivel);
+		this.minasActivas = 0;
 		this.tablero = new Celda[filas][columnas];
+		random = new Random();
+		iniciarTablero();
+		this.CeldasAlrededor = new ArrayList<Celda>();
+		
 	}
 
-	public Tablero(Tablero original) { // constructor para copiar el tablero iniciar
-		this.filas = original.filas;
-		this.columnas = original.columnas;
-		this.tablero = new Celda[filas][columnas];
-
-		for (int i = 0; i < filas; i++) {
-			for (int j = 0; j < columnas; j++) {
-				this.tablero[i][j] = new Celda(original.tablero[i][j].estaVivo());
-			}
+	
+	private void escogerNivel(Dificultad nivel){
+		
+		switch(nivel){
+			case PRINCIPIANTE:
+				this.filas = 8;
+				this.columnas = 8;
+				this.minas = Math.round(((float) 10 / 100) * tamano());
+			break;
+			case BASICO:
+				this.filas = 15;
+				this.columnas = 15;
+				this.minas = Math.round(((float) (random.nextInt(6) + 15) / 100) * tamano());
+			break;
+			case MEDIO:
+				this.filas = 30;
+				this.columnas = 30;
+				this.minas = Math.round(((float) (random.nextInt(6) + 20) / 100) * tamano());
+			break;
+			case AVANZADO:
+				this.filas = 50;
+				this.columnas = 50;
+				this.minas = Math.round(((float) (random.nextInt(21) + 25) / 100) * tamano());
+			break;
 		}
+
 	}
+
+	
 
 	public int tamano() { // regresa el tamaño del tablero
 		return (filas * columnas);
 	}
 
-	public void iniciarTableroManual(Reglas valores) {
-		int tamanoTablero = tamano();
+	
 
-		int totalVivos = valores.totalVivos();
+	public void iniciarTablero() {
 
-		int contador = 0;
-		int coorderanasLenght = valores.getCoordenadas().length;
-		String[] lstCoordenadas = valores.getCoordenadas();
-
+		
 		for (int i = 0; i < filas; i++) {
-
-			for (int j = 0; j < columnas; j++) {
-				tablero[i][j] = new Celda(false);
-			}
-		}
-
-		for (int i = 0; i < coorderanasLenght; i++) {
-			if (lstCoordenadas[i] != null) {
-				String[] parts = lstCoordenadas[i].split(",");
-				
-				tablero[Integer.parseInt(parts[0])]
-						[Integer.parseInt(parts[1])] = new Celda(true);
-			}
-
-		}
-
+            for (int j = 0; j < columnas; j++) {
+                tablero[i][j] = new Celda(false);
+            }
+        }
+		
+		agregarMinas(minas);
 	}
 
-	public void iniciarTableroAutomatico(int porcentajeVivos) {
+	public void agregarMinas(int minas){
+		if(minas == 0){
+			return;
+		}
+		int filaRandom = random.nextInt(this.filas);
+		int columnaRandom = random.nextInt(this.columnas);
+		
+		if(!tablero[filaRandom][columnaRandom].esBomba()){
+			tablero[filaRandom][columnaRandom] = new Celda(true);
+			agregarMinas(minas - 1);
+		}else{
+			agregarMinas(minas);
+		}
+	}
 
-		Random random = new Random();
 
-		int tamanoTablero = tamano();
-		System.out.println(tamanoTablero);
-		int totalVivos = Math.round(((float) porcentajeVivos / 100) * tamanoTablero); // calcular el numero de vivos en
-																						// el tablero
-
-		int contador = 0;
-		System.out.println(totalVivos);
-
-		do {
-			for (int i = 0; i < filas; i++) {
-
-				for (int j = 0; j < columnas; j++) {
-
-					if (tablero[i][j] == null) {
-						tablero[i][j] = new Celda(false);
-					}
-					if (random.nextBoolean() && !tablero[i][j].estaVivo() && totalVivos != contador) {
-						tablero[i][j] = new Celda(true);
-						contador++;
-					}
+	public int seleccionarCelda(int fila, int columna) {
+			try {
+				if(tablero[fila][columna].esBomba()){ // Verificar si la celda actual es una bomba.
+					//perdio
 
 				}
-			}
-		} while (totalVivos != contador);
-
-	}
-
-	public void setTablero(int fila, int columna, Celda cell) { // funcion de apoyo para generacion
-		this.tablero[fila][columna] = cell;
-	}
-
-	public Tablero generacion(Reglas valores) { // proceso para crear una nueva generacion
-		Tablero nuevaGeneracion = new Tablero(valores.getNumFilas(), valores.getNumColumnas());
-		int vecinosVivos = 0;
-
-		for (int i = 0; i < filas; i++) {
-
-			for (int j = 0; j < columnas; j++) {
-
-				vecinosVivos = vecinosVivos(i, j);
-				
-				if (tablero[i][j].estaVivo()) {
-					// tablero[i][j] = new Celda(true);
-
-					if (vecinosVivos < 2 || vecinosVivos > 3) { // si tiene menos de 2 o mas de 3 vecinos muere
-						nuevaGeneracion.setTablero(i, j, new Celda(false));
-					} else {
-						if (vecinosVivos == 2 || vecinosVivos == 3) { // si tiene 2 o 3 vecinos vive, si no muere
-							nuevaGeneracion.setTablero(i, j, new Celda(true));
-						} else {
-							nuevaGeneracion.setTablero(i, j, new Celda(false));
+				if (tablero[fila][columna].getNumeroBombasAlrededor() == 0) {
+					tablero[fila][columna].abrir();
+				}
+				int bombasVecinas = 0;
+				// Recorrer las celdas vecinas y contar bombas.9
+				for (int i = -1; i <= 1; i++) {
+					for (int j = -1; j <= 1; j++) {
+						if (i != 0 || j != 0) { // Evitar la celda actual.
+							bombasVecinas += seleccionarCelda(fila + i, columna + j);
 						}
-
 					}
-
-				} else {
-					if (vecinosVivos == 3) { // si esta muerto y tiene 3 vecinos entonces vive
-						nuevaGeneracion.setTablero(i, j, new Celda(true));
-					} else {
-						nuevaGeneracion.setTablero(i, j, new Celda(false));
-					}
-
 				}
-
+			} catch (Exception e) {
+				// La excepción solo se captura si se desbordan los límites al explorar celdas vecinas.
+				
 			}
-		}
+		
+			return 0;
+		
 
-		return nuevaGeneracion;
+		
 	}
 
-	public boolean tablerosIguales(Tablero anterior) { // comparar tablero actual vs tablero anterior
 
-		Celda[][] tableroAnterior = anterior.getTablero();
-		for (int i = 0; i < filas; i++) {
 
-			for (int j = 0; j < columnas; j++) {
-
-				if (tablero[i][j].estaVivo() != tableroAnterior[i][j].estaVivo()) {
-					return false;
-				}
-
-			}
-
-		}
-
-		return true;
-	}
 
 	public Celda[][] getTablero() { // regresa tablero del obj
 		return this.tablero;
@@ -159,7 +130,7 @@ public class Tablero {
 		for (int i = 0; i < filas; i++) {
 
 			for (int j = 0; j < columnas; j++) {
-				if (tablero[i][j].estaVivo()) {
+				if (tablero[i][j].esBomba()) {
 					contador++;
 				}
 
@@ -178,14 +149,14 @@ public class Tablero {
 
 				if (i != fila || j != columna) { // Excluir la Celda que se esta revisando
 					try {
-						if (tablero[i][j].estaVivo()) {
+						if (tablero[i][j].esBomba()) {
 							contador++;
 						}
 					} catch (ArrayIndexOutOfBoundsException e) {
 						
 					}
 					/* 
-					if (i >= 0 && i < tablero.length && j >= 0 && j < tablero[0].length && tablero[i][j].estaVivo()) { 
+					if (i >= 0 && i < tablero.length && j >= 0 && j < tablero[0].length && tablero[i][j].esBomba()) { 
 						contador++;
 					}*/
 				}
@@ -195,16 +166,6 @@ public class Tablero {
 		return contador;
 	}
 	
-	public int vecinosVivosNoFor(int fila, int columna) { //Regresa el total de vecinos sin fors, lo saque de chatgpt XD
-		return (int) IntStream.rangeClosed(fila - 1, fila + 1)
-				.mapToObj(row -> IntStream.rangeClosed(columna - 1, columna + 1)
-						.filter(col -> row != fila || col != columna)
-						.filter(col -> row >= 0 && row < tablero.length && col >= 0 && col < tablero[0].length)
-						.filter(col -> tablero[row][col].estaVivo()))
-				.flatMap(IntStream::boxed)
-				.count();
-	}
-
 	public String toString() { // regresa un string con toda la informacion del tablero
 		int contadorOrganismos = 1;
 		String StringOrganismos = "Organismos vivos en Celdas: \n";
@@ -213,7 +174,7 @@ public class Tablero {
 		for (int i = 0; i < filas; i++) {
 
 			for (int j = 0; j < columnas; j++) {
-				if (tablero[i][j].estaVivo()) {
+				if (tablero[i][j].esBomba()) {
 					StringOrganismos += "n" + contadorOrganismos + "=(" + i + "," + j + ") ";
 					contadorOrganismos++;
 				}
