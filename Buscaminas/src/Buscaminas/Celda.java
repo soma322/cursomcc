@@ -59,15 +59,13 @@ public class Celda {
 	}
 	
 	public String toString() {//🚩💣💥
-		/*if(!estaAbierta){
-			return "[  ]";
-		}*/
+		if (this.bomba) {
+            return "[💣]";
+        }
 
 		if (this.exploto) {
             return "[💥]";
-        } else if (this.bomba) {
-            return "[💣]";
-        } else if (this.bloquear) {
+        }else if (this.bloquear) {
             return "[❌]";
         } else if (this.marcar) {
             return "[🚩]";

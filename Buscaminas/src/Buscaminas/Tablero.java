@@ -1,6 +1,5 @@
 package Buscaminas;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 enum Dificultad {
@@ -11,17 +10,17 @@ public class Tablero {
 	private int filas;
 	private int columnas;
 	private Celda[][] tablero;
-	private ArrayList<Celda> CeldasAlrededor;
 	private int minas;
-	private int minasActivas;
 	private Random random;
-	public Tablero(Dificultad nivel) { // constructor del tablero inicial
+	private long tiempoInicio;
+	
+	public Tablero(Dificultad nivel,long tiempoInicio) { // constructor del tablero inicial
 		escogerNivel(nivel);
-		this.minasActivas = 0;
 		this.tablero = new Celda[filas][columnas];
+		this.tiempoInicio = tiempoInicio;
 		random = new Random();
+		
 		iniciarTablero();
-		this.CeldasAlrededor = new ArrayList<Celda>();
 		
 	}
 
@@ -63,7 +62,7 @@ public class Tablero {
 
 	public void iniciarTablero() {
 
-		
+		// inicializar tablero con objetos Celda
 		for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 tablero[i][j] = new Celda(false);
@@ -87,48 +86,6 @@ public class Tablero {
 			agregarMinas(minas);
 		}
 	}
-	/*
-	public int seleccionarCelda(int fila, int columna) {
-
-	try {
-		if (tablero[fila][columna].esBomba()) {
-			return 1;
-		}
-
-		if (tablero[fila][columna].estaAbierta() || tablero[fila][columna].estaMarcado()) {
-			return 0;
-		}
-
-		tablero[fila][columna].abrir();
-		int bombasVecinas = 0;
-		for (Celda celda : getCeldaVecinas(fila, columna)) {
-			if (!celda.esBomba()) {
-				celda.abrir();
-			}
-			bombasVecinas += celda.esBomba() ? 1 : 0;
-		}
-
-		tablero[fila][columna].setNumeroBombas(bombasVecinas);
-	} catch (Exception e) {
-		// TODO: handle exception
-	}
-
-	return 0;
-
-}
-
-	private List<Celda> getCeldaVecinas(int fila, int columna) {
-		List<Celda> celdasVecinas = new ArrayList<>();
-		for (int i = fila - 1; i <= fila + 1; i++) {
-			for (int j = columna - 1; j <= columna + 1; j++) {
-				if (i >= 0 && i < filas && j >= 0 && j < columnas && (i != fila || j != columna)) {
-					celdasVecinas.add(tablero[i][j]);
-				}
-			}
-		}
-		return celdasVecinas;
-	}
-	*/
 
 	public void abrirCelda(int fila, int columna) {
 		try {
@@ -146,7 +103,13 @@ public class Tablero {
 					// Si no hay bombas vecinas, abrir celdas vecinas.
 					for (int i = fila - 1; i <= fila + 1; i++) {
 						for (int j = columna - 1; j <= columna + 1; j++) {
-							abrirCelda(i, j);
+							try {
+								if (i != fila || j != columna) { // Evitar la celda actual.
+									abrirCelda(i, j);
+								}
+							} catch (Exception e) {
+								// fuera de index
+							}
 						}
 					}
 				}
@@ -154,8 +117,10 @@ public class Tablero {
 				
 			}
 		} catch (Exception e) {
-			// fuera de index
+			// TODO: handle exception
 		}
+			
+		
 	
 		
 	}
@@ -178,131 +143,19 @@ public class Tablero {
 	
 		return bombasVecinas;
 	}
-	/*
-	public int seleccionarCelda(int fila, int columna) {
-			
-		try {
-				if(tablero[fila][columna].esBomba()){
-					return 1;
-				}
 
-				if(tablero[fila][columna].estaAbierta() || tablero[fila][columna].estaMarcado()){ // Verificar si la celda actual es una bomba.
-					return 0;
-				}
-
-				
-				tablero[fila][columna].abrir();
-				int bombasVecinas = 0;
-				// Recorrer las celdas vecinas y contar bombas.9
-				for (int i = fila - 1; i <= fila + 1; i++) {
-					for (int j = columna - 1; j <= columna + 1; j++) {
-							if (i != fila || j != columna){
-								System.out.println("checando fila:"+i);
-								System.out.println("checando columna:"+j);
-								bombasVecinas += tablero[i][j].esBomba() ? 1 : 0;
-              					bombasVecinas += seleccionarCelda(i, j);
-								
-							}
-							
-							
-					}
-				}
-			
-			tablero[fila][columna].setNumeroBombas(bombasVecinas);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return 0;
-		
-	}*/
-	
-/*
-	private void actualizarNumeroMinasAlrededor(){
-
-		for (int i = -1; i <= 1; i++) {
-				for (int j = -1; j <= 1; j++) {
-					if (i != 0 || j != 0) { // Evitar la celda actual.
-						bombasVecinas += seleccionarCelda(fila + i, columna + j);
-					}
-				}
-			}
-        for (int i = 0; i < casillas.length; i++) {
-            for (int j = 0; j < casillas[i].length; j++) {
-                if (casillas[i][j].isMina()){
-                    List<Casilla> casillasAlrededor=obtenerCasillasAlrededor(i, j);
-                    casillasAlrededor.forEach((c)->c.incrementarNumeroMinasAlrededor());
-                }
-            }
-        }
-    }
-*/
 
 
 
 	public Celda[][] getTablero() { // regresa tablero del obj
 		return this.tablero;
 	}
-
-	public int totalVecinosVivos() { // Regresa total vecinos vivos en un tablero
-		int contador = 0;
-		for (int i = 0; i < filas; i++) {
-
-			for (int j = 0; j < columnas; j++) {
-				if (tablero[i][j].esBomba()) {
-					contador++;
-				}
-
-			}
-
-		}
-		return contador;
-	}
-
-	public int vecinosVivos(int fila, int columna) { // Regresa el total de vecinos vivos alrededor de una Celda
-
-		int contador = 0;
-		// System.out.println( tablero[0].length);
-		for (int i = fila - 1; i <= fila + 1; i++) {
-			for (int j = columna - 1; j <= columna + 1; j++) {
-
-				if (i != fila || j != columna) { // Excluir la Celda que se esta revisando
-					try {
-						if (tablero[i][j].esBomba()) {
-							contador++;
-						}
-					} catch (ArrayIndexOutOfBoundsException e) {
-						
-					}
-					/* 
-					if (i >= 0 && i < tablero.length && j >= 0 && j < tablero[0].length && tablero[i][j].esBomba()) { 
-						contador++;
-					}*/
-				}
-			}
-		}
-
-		return contador;
-	}
+	
 	
 	public String toString() { // regresa un string con toda la informacion del tablero
-		int contadorOrganismos = 1;
-		String StringOrganismos = "Organismos vivos en Celdas: \n";
-		int totalOrganismos = 0;
-
-		for (int i = 0; i < filas; i++) {
-
-			for (int j = 0; j < columnas; j++) {
-				if (tablero[i][j].esBomba()) {
-					StringOrganismos += "n" + contadorOrganismos + "=(" + i + "," + j + ") ";
-					contadorOrganismos++;
-				}
-
-			}
-
-		}
-		totalOrganismos = contadorOrganismos - 1;
-		String respuesta = "Filas: " + filas + " Columnas: " + columnas + " Organismos=" + totalOrganismos + "\n";
-		respuesta += StringOrganismos;
+		
+		
+		String respuesta = "";
 		respuesta += "\n";
 
 		respuesta += "[ ]";

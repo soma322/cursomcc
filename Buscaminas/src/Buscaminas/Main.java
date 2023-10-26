@@ -2,7 +2,8 @@ package Buscaminas;
 
 public class Main {
     public static void main(String[] args) {
-        Tablero buscaminas = new Tablero(Dificultad.PRINCIPIANTE);
+        long tiempoInicio = System.currentTimeMillis();
+        Tablero buscaminas = new Tablero(Dificultad.PRINCIPIANTE,tiempoInicio);
         
         buscaminas.abrirCelda(1,1);
         System.out.println(buscaminas.toString());
