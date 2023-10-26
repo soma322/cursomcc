@@ -1,7 +1,6 @@
 package Buscaminas;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 enum Dificultad {
@@ -88,37 +87,136 @@ public class Tablero {
 			agregarMinas(minas);
 		}
 	}
-
-
+	/*
 	public int seleccionarCelda(int fila, int columna) {
-			try {
-				if(tablero[fila][columna].esBomba()){ // Verificar si la celda actual es una bomba.
-					//perdio
 
+	try {
+		if (tablero[fila][columna].esBomba()) {
+			return 1;
+		}
+
+		if (tablero[fila][columna].estaAbierta() || tablero[fila][columna].estaMarcado()) {
+			return 0;
+		}
+
+		tablero[fila][columna].abrir();
+		int bombasVecinas = 0;
+		for (Celda celda : getCeldaVecinas(fila, columna)) {
+			if (!celda.esBomba()) {
+				celda.abrir();
+			}
+			bombasVecinas += celda.esBomba() ? 1 : 0;
+		}
+
+		tablero[fila][columna].setNumeroBombas(bombasVecinas);
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
+
+	return 0;
+
+}
+
+	private List<Celda> getCeldaVecinas(int fila, int columna) {
+		List<Celda> celdasVecinas = new ArrayList<>();
+		for (int i = fila - 1; i <= fila + 1; i++) {
+			for (int j = columna - 1; j <= columna + 1; j++) {
+				if (i >= 0 && i < filas && j >= 0 && j < columnas && (i != fila || j != columna)) {
+					celdasVecinas.add(tablero[i][j]);
 				}
-				if (tablero[fila][columna].getNumeroBombasAlrededor() == 0) {
-					tablero[fila][columna].abrir();
-				}
-				int bombasVecinas = 0;
-				// Recorrer las celdas vecinas y contar bombas.9
-				for (int i = -1; i <= 1; i++) {
-					for (int j = -1; j <= 1; j++) {
-						if (i != 0 || j != 0) { // Evitar la celda actual.
-							bombasVecinas += seleccionarCelda(fila + i, columna + j);
+			}
+		}
+		return celdasVecinas;
+	}
+	*/
+
+	public void abrirCelda(int fila, int columna) {
+		try {
+			if (tablero[fila][columna].estaAbierta()) {
+				return; // La celda ya está abierta o marcada.
+			}
+		
+			tablero[fila][columna].abrir();
+		
+			if (!tablero[fila][columna].esBomba()) {
+				int bombasVecinas = contarBombasVecinas(fila, columna);
+				tablero[fila][columna].setNumeroBombas(bombasVecinas);
+		
+				if (bombasVecinas == 0) {
+					// Si no hay bombas vecinas, abrir celdas vecinas.
+					for (int i = fila - 1; i <= fila + 1; i++) {
+						for (int j = columna - 1; j <= columna + 1; j++) {
+							abrirCelda(i, j);
 						}
 					}
 				}
-			} catch (Exception e) {
-				// La excepción solo se captura si se desbordan los límites al explorar celdas vecinas.
+				
 				
 			}
-		
-			return 0;
-		
-
+		} catch (Exception e) {
+			// fuera de index
+		}
+	
 		
 	}
+	
+	public int contarBombasVecinas(int fila, int columna) {
+		int bombasVecinas = 0;
+	
+		for (int i = fila - 1; i <= fila + 1; i++) {
+			for (int j = columna - 1; j <= columna + 1; j++) {
+				try {
+					if ((i != fila || j != columna) && tablero[i][j].esBomba()) {
+						bombasVecinas++;
+					}
+				} catch (Exception e) {
+					// fuera de index
+				}
+				
+			}
+		}
+	
+		return bombasVecinas;
+	}
+	/*
+	public int seleccionarCelda(int fila, int columna) {
+			
+		try {
+				if(tablero[fila][columna].esBomba()){
+					return 1;
+				}
 
+				if(tablero[fila][columna].estaAbierta() || tablero[fila][columna].estaMarcado()){ // Verificar si la celda actual es una bomba.
+					return 0;
+				}
+
+				
+				tablero[fila][columna].abrir();
+				int bombasVecinas = 0;
+				// Recorrer las celdas vecinas y contar bombas.9
+				for (int i = fila - 1; i <= fila + 1; i++) {
+					for (int j = columna - 1; j <= columna + 1; j++) {
+							if (i != fila || j != columna){
+								System.out.println("checando fila:"+i);
+								System.out.println("checando columna:"+j);
+								bombasVecinas += tablero[i][j].esBomba() ? 1 : 0;
+              					bombasVecinas += seleccionarCelda(i, j);
+								
+							}
+							
+							
+					}
+				}
+			
+			tablero[fila][columna].setNumeroBombas(bombasVecinas);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return 0;
+		
+	}*/
+	
+/*
 	private void actualizarNumeroMinasAlrededor(){
 
 		for (int i = -1; i <= 1; i++) {
@@ -137,7 +235,7 @@ public class Tablero {
             }
         }
     }
-
+*/
 
 
 

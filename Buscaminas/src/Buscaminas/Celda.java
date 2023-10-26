@@ -31,7 +31,9 @@ public class Celda {
 	}
 
 
-
+	public void setNumeroBombas(int numero){
+		this.numeroBombas = numero;
+	}
 	public boolean marcar(){
 		if(estaAbierta){
 			return false; //no se puede interactuar
@@ -48,7 +50,12 @@ public class Celda {
 		return true;
 	}
 	public void abrir() {
-        estaAbierta = true;
+		 estaAbierta = true;
+       
+	}
+
+	public boolean estaAbierta(){
+		return estaAbierta;
 	}
 	
 	public String toString() {//🚩💣💥
@@ -65,7 +72,7 @@ public class Celda {
         } else if (this.marcar) {
             return "[🚩]";
         } else if (estaAbierta) {
-            return "[" + this.numeroBombas + "]";
+            return "[ " + this.numeroBombas + " ]";
         } else {
             return "[  ]";
         }
