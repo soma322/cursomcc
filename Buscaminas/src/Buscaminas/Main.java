@@ -7,6 +7,7 @@ public class Main {
         
         buscaminas.abrirCelda(1,1);
         System.out.println(buscaminas.toString());
+        System.out.println(buscaminas.toString(true));
        // System.out.println(buscaminas.contarBombasVecinas(1,1,buscaminas.getVisitadas()));
     }
     

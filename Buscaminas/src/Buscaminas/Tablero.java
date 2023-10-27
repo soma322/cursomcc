@@ -13,44 +13,104 @@ public class Tablero {
 	private int minas;
 	private Random random;
 	private long tiempoInicio;
+	private long tiempoFinal;
+	private int nivelDificultad;
+	private int celdasVacias;
 	
 	public Tablero(Dificultad nivel,long tiempoInicio) { // constructor del tablero inicial
-		escogerNivel(nivel);
-		this.tablero = new Celda[filas][columnas];
-		this.tiempoInicio = tiempoInicio;
 		random = new Random();
-		
-		iniciarTablero();
-		
-	}
-
-	
-	private void escogerNivel(Dificultad nivel){
-		
+		int minimo = 0;
+		int maximo = 0;
 		switch(nivel){
 			case PRINCIPIANTE:
+				this.nivelDificultad = 1;
 				this.filas = 8;
 				this.columnas = 8;
-				this.minas = Math.round(((float) 10 / 100) * tamano());
+				this.minas = (int) (0.10 * tamano());
 			break;
 			case BASICO:
+				this.nivelDificultad = 2;
 				this.filas = 15;
 				this.columnas = 15;
-				this.minas = Math.round(((float) (random.nextInt(6) + 15) / 100) * tamano());
+				minimo = (int) (0.20 * tamano());
+            	maximo = (int) (0.25 * tamano());
+				this.minas = random.nextInt(maximo - minimo + 1) + minimo;
 			break;
 			case MEDIO:
+				this.nivelDificultad = 3;
 				this.filas = 30;
 				this.columnas = 30;
-				this.minas = Math.round(((float) (random.nextInt(6) + 20) / 100) * tamano());
+				minimo = (int) (0.20 * tamano());
+           	 	maximo = (int) (0.25 * tamano());
+				this.minas = random.nextInt(maximo - minimo + 1) + minimo;
 			break;
 			case AVANZADO:
+				this.nivelDificultad = 4;
 				this.filas = 50;
 				this.columnas = 50;
-				this.minas = Math.round(((float) (random.nextInt(21) + 25) / 100) * tamano());
+				minimo = (int) (0.25 * tamano());
+           	 	maximo = (int) (0.40 * tamano());
+				this.minas = random.nextInt(maximo - minimo + 1) + minimo;
 			break;
 		}
+		this.tablero = new Celda[this.filas][this.columnas];
+		this.tiempoInicio = tiempoInicio;
+		this.tiempoFinal  = 0;
+		
+		
+		// inicializar tablero con objetos Celda
+		for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                tablero[i][j] = new Celda(false);
+            }
+        }
+		celdasVacias = tamano() - minas;
+		agregarMinas(minas);
+		
+	}
+
+	public int calcularPuntuacion(boolean victoria){
+		int puntuaje = 0;
+		if(victoria){
+			puntuaje = puntuaje + 1000;
+		}else{
+			return 0;
+		}
+		switch (puntuaje) {
+			case 1: // PRINCIPIANTE
+				puntuaje += 500;
+				break;
+			case 2: // BÁSICO
+				puntuaje += 1000;
+				break;
+			case 3: // MEDIO
+				puntuaje += 1500;
+				break;
+			case 4: // AVANZADO
+				puntuaje += 2000;
+				break;
+			default:
+				break;
+		}
+		long tiempo = this.tiempoInicio - this.tiempoFinal;
+		if (tiempo <= 60) { // menor a 1min
+			puntuaje += 200;
+		} else if (tiempo <= 120) { // menor a 2 min
+			puntuaje += 100;
+		} else if (tiempo <= 180) { // menor a 3 min
+			puntuaje += 50;
+		} else if (tiempo <= 240) { // menor a 4min
+			puntuaje += 25;
+		}else if(tiempo >240){
+			puntuaje += 10;
+		}
+
+		return puntuaje;
 
 	}
+	
+	
+	
 
 	
 
@@ -58,19 +118,76 @@ public class Tablero {
 		return (filas * columnas);
 	}
 
+	public boolean boom(int fila,int columna){
+		boolean response = false;
+		if(tablero[fila][columna].esBomba()){
+			tablero[fila][columna].setExploto(true);
+			response = true;
+		}
+		return response;
+	}
 	
 
-	public void iniciarTablero() {
-
-		// inicializar tablero con objetos Celda
-		for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                tablero[i][j] = new Celda(false);
-            }
-        }
-		
-		agregarMinas(minas);
+	public boolean bloqueoCelda(int fila, int columna){
+		return tablero[fila][columna].setBloqueo();
 	}
+	public boolean desBloqueoCelda(int fila, int columna){
+		return tablero[fila][columna].setDesbloqueo();
+	}
+	
+	public int celdasVacias(){
+		return this.celdasVacias;
+	}
+
+	public boolean jugar(int fila, int columna, String opcion){
+		boolean response = true;
+
+		switch(opcion){
+			case "B":
+				if(!bloqueoCelda(fila,columna)){
+					System.out.println("Casilla abierta o bloqueada");
+					System.out.println("Favor de seleccionar casillas cerradas.");
+				}
+				
+			break;
+			case "D":
+				if(!desBloqueoCelda(fila,columna)){
+					System.out.println("Casilla abierta o no bloqueada");
+					System.out.println("Favor de seleccionar casillas bloqueada.");
+				}
+				
+			break;
+			case "M":
+				if(tablero[fila][columna].estaAbierta()){
+					System.out.println("Casilla ya se encuentra abierta");
+					System.out.println("Favor de seleccionar otra.");
+					
+				}else if(tablero[fila][columna].estaBloqueado()){
+					System.out.println("Casilla Bloqueada");
+					System.out.println("Favor de seleccionar otra.");
+					
+				}else if(!tablero[fila][columna].esBomba()){
+					abrirCelda(fila,columna);
+					if(celdasVacias == 0){
+						response = false;
+					}
+					
+				}else{
+					response = false;
+				}
+			break;
+			default:
+				System.out.println("Favor de seleccionar una opcion valida (B)loquear,(D)esbloquear,(M)ina :");
+				System.out.println("Ejemplo: 1,1,M");
+			break;
+
+		}
+
+		return response;
+
+	}
+
+
 
 	public void agregarMinas(int minas){
 		if(minas == 0){
@@ -89,12 +206,12 @@ public class Tablero {
 
 	public void abrirCelda(int fila, int columna) {
 		try {
-			if (tablero[fila][columna].estaAbierta()) {
+			if (tablero[fila][columna].estaAbierta() || tablero[fila][columna].estaBloqueado()) {
 				return; // La celda ya está abierta o marcada.
 			}
 		
 			tablero[fila][columna].abrir();
-		
+			celdasVacias = celdasVacias - 1;
 			if (!tablero[fila][columna].esBomba()) {
 				int bombasVecinas = contarBombasVecinas(fila, columna);
 				tablero[fila][columna].setNumeroBombas(bombasVecinas);
@@ -117,7 +234,8 @@ public class Tablero {
 				
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			// si entra, significa fuera de index
+			
 		}
 			
 		
@@ -175,22 +293,29 @@ public class Tablero {
 		return respuesta;
 	}
 
-	public void imprimir() { // imprime el tablero
-		System.out.print("[ ]");
+	public String toString(boolean flag) { // regresa un string con toda la informacion del tablero
+		
+		
+		String respuesta = "";
+		respuesta += "\n";
+
+		respuesta += "[ ]";
 		for (int i = 0; i < filas; i++) {
-			System.out.print("[" + i + "]");
+			respuesta += " [" + i + "]";
 		}
-		System.out.println();
-
+		respuesta += "\n";
 		for (int i = 0; i < filas; i++) {
-			System.out.print("[" + i + "]");
+			respuesta += "[" + i + "] ";
 			for (int j = 0; j < columnas; j++) {
-
-				System.out.print(tablero[i][j].toString());
+				respuesta += tablero[i][j].toString(flag);
 
 			}
-			System.out.println("");
+			respuesta += "\n";
 		}
+
+		return respuesta;
 	}
+
+	
 
 }

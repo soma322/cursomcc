@@ -5,14 +5,12 @@ public class Celda {
 	private boolean bomba;
 	private boolean exploto;
 	private boolean bloquear;
-	private boolean marcar;
 	private int numeroBombas;
 	
 	public Celda (boolean bomba) {
 		this.bomba = bomba;
 		this.exploto = false;
 		this.bloquear = false;
-		this.marcar = false;
 		this.estaAbierta = false;
 		this.numeroBombas = 0;
 	}
@@ -23,53 +21,62 @@ public class Celda {
 	public boolean estaBloqueado() {
 		return this.bloquear;
 	}
-	public boolean estaMarcado() {
-		return this.bomba;
-	}
 	public int getNumeroBombasAlrededor() {
 		return this.numeroBombas;
 	}
 
+	public void setExploto(boolean exploto){
+		this.exploto = exploto;
+	}
 
 	public void setNumeroBombas(int numero){
 		this.numeroBombas = numero;
 	}
-	public boolean marcar(){
-		if(estaAbierta){
+
+	public boolean setBloqueo(){
+		if(estaAbierta || estaBloqueado()){
 			return false; //no se puede interactuar
 		}
-		this.marcar = !this.marcar;
+		this.bloquear = true;
 		return true;
 	}
 
-	public boolean bloquear(){
-		if(estaAbierta){
+	public boolean setDesbloqueo(){
+		if(estaAbierta || !estaBloqueado()){
 			return false; //no se puede interactuar
 		}
-		this.bloquear = !this.bloquear;
+		this.bloquear = false;
 		return true;
 	}
 	public void abrir() {
-		 estaAbierta = true;
-       
-	}
+		estaAbierta = true;
+	  
+   }
 
 	public boolean estaAbierta(){
 		return estaAbierta;
 	}
 	
 	public String toString() {//🚩💣💥
-		if (this.bomba) {
-            return "[💣]";
-        }
-
 		if (this.exploto) {
             return "[💥]";
         }else if (this.bloquear) {
-            return "[❌]";
-        } else if (this.marcar) {
             return "[🚩]";
-        } else if (estaAbierta) {
+        }else if (estaAbierta) {
+            return "[ " + this.numeroBombas + " ]";
+        } else {
+            return "[  ]";
+        }
+	}
+
+	public String toString(boolean bomba) {
+		if (this.bomba) {
+            return "[💣]";
+        }else if (this.exploto) {
+            return "[💥]";
+        }else if (this.bloquear) {
+            return "[❌]";
+        }else if (estaAbierta) {
             return "[ " + this.numeroBombas + " ]";
         } else {
             return "[  ]";
