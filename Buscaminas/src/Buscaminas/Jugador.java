@@ -8,6 +8,10 @@ public class Jugador {
             this.nombre = nombre;
             this.puntaje = 0;
         }
+        public Jugador(String nombre, int puntaje) {
+            this.nombre = nombre;
+            this.puntaje = puntaje;
+        }
 
         public String getNombre() {
             return nombre;
@@ -21,6 +25,9 @@ public class Jugador {
             return puntaje;
         }
 
+        public void guardarPuntuacion(){
+
+        }
         public void juegoPerdido(){
             //guardar en json puntuaje en 0
         }

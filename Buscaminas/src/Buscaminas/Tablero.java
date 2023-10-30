@@ -4,7 +4,7 @@ import java.util.Random;
 
 enum Dificultad {
 	PRINCIPIANTE,BASICO,MEDIO,AVANZADO;
-};
+}
 
 public class Tablero {
 	private int filas;
@@ -69,14 +69,14 @@ public class Tablero {
 		
 	}
 
-	public int calcularPuntuacion(boolean victoria){
+	public int calcularPuntuacion(){
 		int puntuaje = 0;
-		if(victoria){
+		if(checarResultado()){
 			puntuaje = puntuaje + 1000;
 		}else{
 			return 0;
 		}
-		switch (puntuaje) {
+		switch (this.nivelDificultad) {
 			case 1: // PRINCIPIANTE
 				puntuaje += 500;
 				break;
@@ -104,7 +104,7 @@ public class Tablero {
 		}else if(tiempo >240){
 			puntuaje += 10;
 		}
-
+		puntuaje = puntuaje + random.nextInt(10);
 		return puntuaje;
 
 	}
@@ -141,38 +141,41 @@ public class Tablero {
 
 	public boolean jugar(int fila, int columna, String opcion){
 		boolean response = true;
-
+		System.out.println(opcion);
 		switch(opcion){
 			case "B":
-				if(!bloqueoCelda(fila,columna)){
+				if(!bloqueoCelda(fila,columna) ){
 					System.out.println("Casilla abierta o bloqueada");
 					System.out.println("Favor de seleccionar casillas cerradas.");
 				}
-				
 			break;
 			case "D":
 				if(!desBloqueoCelda(fila,columna)){
 					System.out.println("Casilla abierta o no bloqueada");
 					System.out.println("Favor de seleccionar casillas bloqueada.");
 				}
-				
 			break;
 			case "M":
 				if(tablero[fila][columna].estaAbierta()){
 					System.out.println("Casilla ya se encuentra abierta");
 					System.out.println("Favor de seleccionar otra.");
+					break;
 					
-				}else if(tablero[fila][columna].estaBloqueado()){
+				}
+				if(tablero[fila][columna].estaBloqueado()){
 					System.out.println("Casilla Bloqueada");
 					System.out.println("Favor de seleccionar otra.");
-					
-				}else if(!tablero[fila][columna].esBomba()){
+					break;
+				}
+
+				if(!tablero[fila][columna].esBomba()){
 					abrirCelda(fila,columna);
-					if(celdasVacias == 0){
+					if(this.celdasVacias == 0){
 						response = false;
 					}
 					
 				}else{
+					tablero[fila][columna].setExploto(true);
 					response = false;
 				}
 			break;
@@ -314,6 +317,37 @@ public class Tablero {
 		}
 
 		return respuesta;
+	}
+
+	public int getFilas(){
+		return this.filas;
+	}
+	public int getColumas(){
+		return this.columnas;
+	}
+	
+	public boolean checarResultado(){
+		boolean response = false;
+		if(this.celdasVacias == 0){
+			response = true;
+		}
+		return response;
+
+	}
+	public int getNivelDificultad(){
+		return this.nivelDificultad;
+	}
+
+	public void abrirTodasCeldas() {
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				if(!tablero[i][j].esBomba()){
+					tablero[i][j].abrir();
+					this.celdasVacias = this.celdasVacias - 1;
+				}
+				
+			}
+		}
 	}
 
 	

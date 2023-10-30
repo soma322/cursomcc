@@ -7,6 +7,21 @@ public class Leer {
         this.scan = new Scanner(System.in);
     }
 
+    public String leerString(String mensaje){
+        String response = "";
+        boolean flagValido = true;
+
+        while(flagValido){
+            System.out.println(mensaje);
+            response = scan.nextLine();
+
+            if(soloLetras(response)){
+                flagValido = false;
+            }
+        }
+
+        return response;
+    }
  
     
 
@@ -26,14 +41,15 @@ public class Leer {
                     commaCount++;
                 }
             }
-            if (commaCount == 1 ){
+            if (commaCount == 2 ){
                 String[] parts = valor.split(",");
+                
                 if(parts.length == 3){
-                    
 
                     if(esNumerico(parts[0]) && esNumerico(parts[1]) && soloLetras(parts[2])){
                         var1 = Integer.parseInt(parts[0]);
                         var2 = Integer.parseInt(parts[1]);
+                        
                         if (var1 >=0 && var2 >=0 && var1 <= filas && var2 <= columnas) {
                             flagValido = false;
                         }
@@ -67,7 +83,6 @@ public class Leer {
     
 
     private static boolean soloLetras(String str) {
-        // Use regular expression to check if the string contains only letters
         return str.matches("^[a-zA-Z]*$");
     }
     private static boolean esNumerico(String cad) {

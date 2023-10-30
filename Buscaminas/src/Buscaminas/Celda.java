@@ -27,6 +27,7 @@ public class Celda {
 
 	public void setExploto(boolean exploto){
 		this.exploto = exploto;
+		this.bomba	= false;
 	}
 
 	public void setNumeroBombas(int numero){

@@ -1,0 +1,34 @@
+{
+    "1": [
+        {
+            "puntuacion": 1514,
+            "nombre": "soma"
+        },
+        {
+            "puntuacion": 1511,
+            "nombre": "q"
+        },
+        {
+            "puntuacion": 0,
+            "nombre": "SOMA"
+        }
+    ],
+    "2": [
+        {
+            "puntuacion": 2015,
+            "nombre": "SOMA"
+        },
+        {
+            "puntuacion": 2018,
+            "nombre": "FER"
+        }
+    ],
+    "3": [{
+        "puntuacion": 0,
+        "nombre": "soma"
+    }],
+    "4": [{
+        "puntuacion": 3018,
+        "nombre": "soma"
+    }]
+}
