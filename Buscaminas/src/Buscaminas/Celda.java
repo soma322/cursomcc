@@ -76,7 +76,7 @@ public class Celda {
         }else if (this.exploto) {
             return "[💥]";
         }else if (this.bloquear) {
-            return "[❌]";
+            return "[🚩]";
         }else if (estaAbierta) {
             return "[ " + this.numeroBombas + " ]";
         } else {
