@@ -24,7 +24,7 @@ public class Main {
         boolean flagJuego = true;
         do {
             System.out.println(buscaminas.toString());
-            String movimiento = scan.leerCoordenas("Favor de escribir las coordenas y una opcion valida (B)loquear,(D)esbloquear,(M)ina", buscaminas.getFilas(), buscaminas.getColumas());
+            String movimiento = scan.leerCoordenas("Favor de escribir las coordenas y una opcion valida (A)brir, (B)loquear,(D)esbloquear o (M)ina", buscaminas.getFilas(), buscaminas.getColumas());
             String[] movs = movimiento.split(",");
             flagJuego = buscaminas.jugar(Integer.parseInt(movs[0]), Integer.parseInt(movs[1]), movs[2]);
             

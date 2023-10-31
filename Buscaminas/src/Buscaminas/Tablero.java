@@ -134,6 +134,12 @@ public class Tablero {
 	public boolean desBloqueoCelda(int fila, int columna){
 		return tablero[fila][columna].setDesbloqueo();
 	}
+	public boolean bloqueoMinaCelda(int fila, int columna){
+		return tablero[fila][columna].setEsMina();
+	}
+	public boolean desBloqueoMinaCelda(int fila, int columna){
+		return tablero[fila][columna].DesSetEsMina();
+	}
 	
 	public int celdasVacias(){
 		return this.celdasVacias;
@@ -143,6 +149,12 @@ public class Tablero {
 		boolean response = true;
 		System.out.println(opcion);
 		switch(opcion){
+			case "M":
+				if(!bloqueoMinaCelda(fila,columna) ){
+					System.out.println("Casilla abierta o bloqueada");
+					System.out.println("Favor de seleccionar casillas cerradas.");
+				}
+			break;
 			case "B":
 				if(!bloqueoCelda(fila,columna) ){
 					System.out.println("Casilla abierta o bloqueada");
@@ -150,12 +162,23 @@ public class Tablero {
 				}
 			break;
 			case "D":
-				if(!desBloqueoCelda(fila,columna)){
+				boolean check = false;
+				if(!desBloqueoCelda(fila,columna) ){
+					check = true;
+					
+				}
+				if(!desBloqueoMinaCelda(fila,columna) ){
+					check = true;
+				}
+
+				if(check){
 					System.out.println("Casilla abierta o no bloqueada");
 					System.out.println("Favor de seleccionar casillas bloqueada.");
 				}
+
+				
 			break;
-			case "M":
+			case "A":
 				if(tablero[fila][columna].estaAbierta()){
 					System.out.println("Casilla ya se encuentra abierta");
 					System.out.println("Favor de seleccionar otra.");
@@ -163,6 +186,11 @@ public class Tablero {
 					
 				}
 				if(tablero[fila][columna].estaBloqueado()){
+					System.out.println("Casilla Bloqueada");
+					System.out.println("Favor de seleccionar otra.");
+					break;
+				}
+				if(tablero[fila][columna].esMina()){
 					System.out.println("Casilla Bloqueada");
 					System.out.println("Favor de seleccionar otra.");
 					break;
@@ -209,7 +237,7 @@ public class Tablero {
 
 	public void abrirCelda(int fila, int columna) {
 		try {
-			if (tablero[fila][columna].estaAbierta() || tablero[fila][columna].estaBloqueado()) {
+			if (tablero[fila][columna].estaAbierta() || tablero[fila][columna].estaBloqueado() || tablero[fila][columna].esMina()) {
 				return; // La celda ya está abierta o marcada.
 			}
 		

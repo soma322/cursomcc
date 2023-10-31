@@ -5,14 +5,16 @@ public class Celda {
 	private boolean bomba;
 	private boolean exploto;
 	private boolean bloquear;
+	private boolean esMina;
 	private int numeroBombas;
 	
 	public Celda (boolean bomba) {
-		this.bomba = bomba;
-		this.exploto = false;
-		this.bloquear = false;
+		this.bomba 		 = bomba;
+		this.exploto 	 = false;
+		this.bloquear 	 = false;
 		this.estaAbierta = false;
-		this.numeroBombas = 0;
+		this.esMina		 = false;
+		this.numeroBombas= 0;
 	}
 	
 	public boolean esBomba() {
@@ -32,6 +34,26 @@ public class Celda {
 
 	public void setNumeroBombas(int numero){
 		this.numeroBombas = numero;
+	}
+
+	public boolean esMina(){
+		return this.esMina;
+	}
+
+	public boolean setEsMina(){
+		if(estaAbierta || esMina()){
+			return false; //no se puede interactuar
+		}
+		this.esMina = true;
+		return true;
+	}
+
+	public boolean DesSetEsMina(){
+		if(estaAbierta || !esMina()){
+			return false; //no se puede interactuar
+		}
+		this.esMina = true;
+		return true;
 	}
 
 	public boolean setBloqueo(){
@@ -58,12 +80,14 @@ public class Celda {
 		return estaAbierta;
 	}
 	
-	public String toString() {//🚩💣💥
+	public String toString() {//🚩💣💥❌
 		if (this.exploto) {
             return "[💥]";
         }else if (this.bloquear) {
-            return "[🚩]";
-        }else if (estaAbierta) {
+            return "[❌]";
+        }else if(this.esMina){
+			return "[🚩]";
+		}else if (estaAbierta) {
             return "[ " + this.numeroBombas + " ]";
         } else {
             return "[  ]";
@@ -76,8 +100,10 @@ public class Celda {
         }else if (this.exploto) {
             return "[💥]";
         }else if (this.bloquear) {
-            return "[🚩]";
-        }else if (estaAbierta) {
+            return "[❌]";
+        }else if(this.esMina){
+			return "[🚩]";
+		}else if (estaAbierta) {
             return "[ " + this.numeroBombas + " ]";
         } else {
             return "[  ]";
