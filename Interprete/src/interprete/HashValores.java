@@ -1,30 +1,23 @@
 package interprete;
 
 public class HashValores {
-    private String key;
     private String tipo;
-    private Integer value;
+    private Object value; // Using Object to hold Number or String values
 
-    public HashValores(String key,String tipo, Integer value) {
-        this.key = key;
+    public HashValores(String tipo, Object value) {
         this.tipo = tipo;
         this.value = value;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public Integer getValue() {
+    public Object getValue() {
         return value;
     }
+
     public String getTipo() {
         return tipo;
     }
 
-    public void setValue(Integer value) {
+    public void setValor(Object value) {
         this.value = value;
     }
-
-
 }

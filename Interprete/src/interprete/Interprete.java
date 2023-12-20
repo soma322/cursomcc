@@ -129,6 +129,7 @@ public class Interprete {
         List<String> expresion = null;
         List<String> postfixExpresion = null;
         Object resultadoExpresion = null;
+        HashValores valor = null;
         for (String instruccion : programa) {
             // Dividir la instrucción en tokens
             String[] tokens = instruccion.split(" ");
@@ -139,8 +140,8 @@ public class Interprete {
                     String variable = tokens[1];
                     
                     if(tokens.length == 2){
-                        Object entero = memoria.obtenerVariable("int");
-                        memoria.asignarVariable(variable, 0);
+                        valor = new HashValores("entero", 0);
+                        memoria.asignarVariable(variable, valor);
                         break;
                     }
 
@@ -149,14 +150,15 @@ public class Interprete {
                     // Evaluar la expresión
                     postfixExpresion = infixToPostfix(expresion);
                     resultadoExpresion = evaluarExpresion(postfixExpresion);
-                    
+                    //HashValores valor = new HashValores("entero", resultadoExpresion);
                     // Asignar el resultado a la variable
-                    memoria.asignarVariable(variable, resultadoExpresion);
+                    //memoria.asignarVariable(variable, resultadoExpresion);
                     break;
                 case "real":
                     // Manejar instrucción de asignación de variable real
                     if(tokens.length == 2){
-                        memoria.asignarVariable(tokens[1], 0.0);
+                        valor = new HashValores("real", 0.0);
+                        memoria.asignarVariable(tokens[1], valor);
                         break;
                     }
                     expresion = Arrays.asList(tokens).subList(2, tokens.length);
@@ -166,23 +168,27 @@ public class Interprete {
                     resultadoExpresion = evaluarExpresion(postfixExpresion);
                     
                     // Asignar el resultado a la variable
-                    memoria.asignarVariable(tokens[1], resultadoExpresion);
+                    valor = new HashValores("real", resultadoExpresion);
+                    memoria.asignarVariable(tokens[1], valor);
                     break;
                 case "leer":
                     Leer scan = new Leer();
-                    String value = memoria.obtenerClave(tokens[1]);
+                    String value = memoria.obtenerTipo(tokens[1]);
                     switch (value) {
                         case "entero":
                             int valorInt = scan.leerInt("Escribe el valor de: "+ tokens[1]);
-                            memoria.asignarVariable(tokens[1], valorInt);
+                            valor = new HashValores("entero", valorInt);
+                            memoria.asignarVariable(tokens[1], valor);
                             break;
                         case "real":
                             float valorFloat = scan.leerFloat("Escribe el valor de: "+ tokens[1]);
-                            memoria.asignarVariable(tokens[1], valorFloat);
+                            valor = new HashValores("real", valorFloat);
+                            memoria.asignarVariable(tokens[1], valor);
                             break;
                         case "string":
                             String valorString = scan.leerString("Escribe el valor de: "+ tokens[1]);
-                            memoria.asignarVariable(tokens[1], valorString);
+                            valor = new HashValores("string", valorString);
+                            memoria.asignarVariable(tokens[1], valor);
                             break;
                         default:
 
@@ -214,7 +220,8 @@ public class Interprete {
                         List<String> expresion2 = Arrays.asList(tokens).subList(2, tokens.length);
                         List<String> postfixExpresion2 = infixToPostfix(expresion2);
                         Object resultadoExpresion2 = evaluarExpresion(postfixExpresion2);
-                        memoria.asignarVariable(tokens[0], resultadoExpresion2);
+                        valor = new HashValores("real", resultadoExpresion2);
+                        memoria.asignarVariable(tokens[0], valor);
                         break;
                     }
                     break;

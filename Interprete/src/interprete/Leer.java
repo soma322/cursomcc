@@ -98,11 +98,12 @@ public class Leer {
         return valor;
     }
     public int leerInt(String mensaje){
-        String valor = scan.nextLine();
+        String valor = "";
         int res      = 0;
         boolean flagTerminar = true;
         while (flagTerminar) {
             System.out.println(mensaje);
+            valor = scan.nextLine();
             if(esNumerico(valor)){
                 res = Integer.parseInt(valor);
                 flagTerminar = false;
