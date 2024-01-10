@@ -25,7 +25,7 @@ public class Memoria {
     }
 
 
-    public boolean existeVariable(Object valor) {
+    public boolean existeVariable(Object valor) {//parametro string
         return memoria.containsKey(valor);
     }
     public String obtenerClave(Object valor) {

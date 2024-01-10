@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
 
         // Crear un objeto de la clase Commandos
-        Commandos commandos = new Commandos("C:\\Users\\luisf\\eclipse-workspace\\cursomcc\\Interprete\\src\\interprete\\CommandsTxt\\Commandos.txt");
+        Commandos commandos = new Commandos("src\\interprete\\CommandsTxt\\Commandos.txt");
         List<String> programa = new ArrayList<>();
         Interprete interpreter = new Interprete();
         

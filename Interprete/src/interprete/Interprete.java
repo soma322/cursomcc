@@ -14,29 +14,28 @@ public class Interprete {
         memoria = new Memoria();
     }
 
-    public Object obtenerVariable(String valor) {
+    public Object obtenerVariable(String valor) {//repetido
         return memoria.obtenerVariable(valor);
     }
 
     // Método para evaluar expresiones postfix
-    private Object evaluarExpresion(List<String> expresion) {
+    private Object evaluarExpresion(List<String> expresion, String tipoVariableFinal) {
         Stack<Object> pila = new Stack<>();
         Stack<Object> pilaExpresiones = new Stack<>();
 
         for (String token : expresion) {
             if (esOperador(token)) {
-                // Evaluar operadores
-                // Realizar operaciones y apilar resultados
+                
                 Object op2 = pila.pop();
                 Object op1 = pila.pop();
-                pila.push(realizarOperacion(token, op1, op2));
-                //pilaExpresiones.push(token);
+                pila.push(realizarOperacion(token, op1, op2,tipoVariableFinal));
+               
             } else {
-                // If it is a variable, obtain its value from the memoria HashMap
+               
                 if (memoria.existeVariable(token)) {
                     pila.push(memoria.obtenerVariable(token));
                 } else {
-                    // If it is a numeric value, parse it to Integer and apil it
+                  
                     try {
                         int value = Integer.parseInt(token);
                         pila.push(value);
@@ -55,13 +54,13 @@ public class Interprete {
     }
 
     // Método para realizar operaciones
-    private Object realizarOperacion(String operador, Object op1, Object op2) {
+    private Object realizarOperacion(String operador, Object op1, Object op2, String tipoVariableFinal) {
         
         if (op1 instanceof Number && op2 instanceof Number) {
             Number valorOp1 = (Number) op1;
             Number valorOp2 = (Number) op2;
     
-            if (op1 instanceof Integer && op2 instanceof Integer) {
+            if (op1 instanceof Integer && op2 instanceof Integer && tipoVariableFinal.equals("entero")) {// agregar el real
                 int intOp1 = valorOp1.intValue();
                 int intOp2 = valorOp2.intValue();
     
@@ -95,7 +94,7 @@ public class Interprete {
                 }
             }
         } else {
-            // Handle other types or throw an exception for unsupported types
+           
             return null;
         }
        
@@ -107,8 +106,8 @@ public class Interprete {
         HashMap<String, Integer> precedence = new HashMap<>();
         precedence.put("+", 1);
         precedence.put("-", 1);
-        precedence.put("*", 2); // Higher precedence than + and -
-        precedence.put("/", 2); // Higher precedence than + and -
+        precedence.put("*", 2);
+        precedence.put("/", 2);
     
         for (String token : expression) {
             if (esOperador(token)) {
@@ -212,9 +211,6 @@ public class Interprete {
                             break;
                     }
                     
-                    
-                    // Manejar instrucción de lectura
-                    // Implementar la lógica para leer valores
                     break;
                 case "imprime":
                     if(memoria.existeVariable(tokens[1])){
@@ -230,21 +226,20 @@ public class Interprete {
                         break;
                     }
                    
-                    // Manejar instrucción de impresión
-                    // Implementar la lógica para imprimir valores
+                  
                 default:
                     // asignar variable
-                    if(tokens[1].equals("=")){
+                    if(tokens[1].equals("=")){ // validar si existe la memoria
                         List<String> expresion2 = Arrays.asList(tokens).subList(2, tokens.length);
                         List<String> postfixExpresion2 = infixToPostfix(expresion2);
-                        Object resultadoExpresion2 = evaluarExpresion(postfixExpresion2);
+                        Object resultadoExpresion2 = evaluarExpresion(postfixExpresion2, memoria.obtenerTipo(tokens[0]);
                         
                         valor = new HashValores(memoria.obtenerTipo(tokens[0]), resultadoExpresion2);
                         memoria.asignarVariable(tokens[0], valor);
                         break;
                     }
                     break;
-                // Agregar más casos para otras instrucciones
+               
             }
         }
     }
