@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-public class Interprete {
+public class Interprete<T> {
       // Tabla Hash para almacenar las memoria
     
-    Memoria memoria;
+    Memoria<T> memoria;
     public Interprete() {
         memoria = new Memoria();
     }
@@ -27,113 +27,106 @@ public class Interprete {
             if (esOperador(token)) {
                 // Evaluar operadores
                 // Realizar operaciones y apilar resultados
-                Object op2 = pila.pop();
-                Object op1 = pila.pop();
-                pila.push(realizarOperacion(token, op1, op2));
-                //pilaExpresiones.push(token);
+                pilaExpresiones.push(token);
             } else {
                 // If it is a variable, obtain its value from the memoria HashMap
                 if (memoria.existeVariable(token)) {
                     pila.push(memoria.obtenerVariable(token));
                 } else {
                     // If it is a numeric value, parse it to Integer and apil it
-                    try {
-                        int value = Integer.parseInt(token);
-                        pila.push(value);
-                    } catch (NumberFormatException e) {
-
-                        // Handle other types of data or errors
-                        return null;
-                    }
+                    pila.push(token);
+                   
                 }
             }
         }
 
 
-   
+        while (!pilaExpresiones.isEmpty()) {
+            Object op2 = pila.pop();
+            Object op1 = pila.pop();
+            pila.push(realizarOperacion((String) pilaExpresiones.pop(), op1, op2));
+        }
+        // The final result will be at the top of the stack
         return pila.pop();
     }
 
     // Método para realizar operaciones
     private Object realizarOperacion(String operador, Object op1, Object op2) {
         
-        if (op1 instanceof Number && op2 instanceof Number) {
-            Number valorOp1 = (Number) op1;
-            Number valorOp2 = (Number) op2;
+        if (op1 instanceof Integer && op2 instanceof Integer) {
+            int valorOp1 = (int) op1;
+            int valorOp2 = (int) op2;
     
-            if (op1 instanceof Integer && op2 instanceof Integer) {
-                int intOp1 = valorOp1.intValue();
-                int intOp2 = valorOp2.intValue();
+            switch (operador) {
+                case "+":
+                    return valorOp1 + valorOp2;
+                case "-":
+                    return valorOp1 - valorOp2;
+                case "*":
+                    return valorOp1 * valorOp2;
+                case "/":
+                    return valorOp1 / valorOp2;
+                default:
+                    return null;
+            }
+        } else if (op1 instanceof Float && op2 instanceof Float) {
+            float valorOp1 = (float) op1;
+            float valorOp2 = (float) op2;
     
-                switch (operador) {
-                    case "+":
-                        return intOp1 + intOp2;
-                    case "-":
-                        return intOp1 - intOp2;
-                    case "*":
-                        return intOp1 * intOp2;
-                    case "/":
-                        return intOp1 / intOp2; // Integer division
-                    default:
-                        return null;
-                }
-            } else {
-                float floatOp1 = valorOp1.floatValue();
-                float floatOp2 = valorOp2.floatValue();
-    
-                switch (operador) {
-                    case "+":
-                        return floatOp1 + floatOp2;
-                    case "-":
-                        return floatOp1 - floatOp2;
-                    case "*":
-                        return floatOp1 * floatOp2;
-                    case "/":
-                        return floatOp1 / floatOp2;
-                    default:
-                        return null;
-                }
+            switch (operador) {
+                case "+":
+                    return valorOp1 + valorOp2;
+                case "-":
+                    return valorOp1 - valorOp2;
+                case "*":
+                    return valorOp1 * valorOp2;
+                case "/":
+                    return valorOp1 / valorOp2;
+                default:
+                    return null;
             }
         } else {
             // Handle other types or throw an exception for unsupported types
             return null;
         }
+          
+       
        
     }
-    private List<String> infixToPostfix(List<String> expression) {
-        List<String> postfixExpression = new ArrayList<>();
-        Stack<String> operators = new Stack<>();
-    
-        HashMap<String, Integer> precedence = new HashMap<>();
-        precedence.put("+", 1);
-        precedence.put("-", 1);
-        precedence.put("*", 2); // Higher precedence than + and -
-        precedence.put("/", 2); // Higher precedence than + and -
-    
-        for (String token : expression) {
-            if (esOperador(token)) {
-                while (!operators.isEmpty() && precedence.getOrDefault(operators.peek(), 0) >= precedence.get(token)) {
-                    postfixExpression.add(operators.pop());
-                }
-                operators.push(token);
-            } else if (token.equals("(")) {
-                operators.push(token);
-            } else if (token.equals(")")) {
-                while (!operators.isEmpty() && !operators.peek().equals("(")) {
-                    postfixExpression.add(operators.pop());
-                }
-                operators.pop(); // Discard the "("
-            } else {
-                postfixExpression.add(token);
+    private List<String> infixToPostfix(List<String> expresion) {
+    List<String> postfixExpresion = new ArrayList<>();
+    Stack<String> operadores = new Stack<>();
+
+    HashMap<String, Integer> precedencia = new HashMap<>();
+    precedencia.put("+", 1);
+    precedencia.put("-", 1);
+    precedencia.put("*", 2);
+    precedencia.put("/", 2);
+
+    for (String token : expresion) {
+        if (esOperador(token)) {
+            while (!operadores.isEmpty() && precedencia.getOrDefault(operadores.peek(), 0) >= precedencia.get(token)) {
+                postfixExpresion.add(operadores.pop());
             }
+            operadores.push(token);
+        } else if (token.equals("(")) {
+            operadores.push(token);
+        } else if (token.equals(")")) {
+            while (!operadores.isEmpty() && !operadores.peek().equals("(")) {
+                postfixExpresion.add(operadores.pop());
+            }
+            operadores.pop(); // Eliminar el "("
+        } else {
+            postfixExpresion.add(token);
         }
-    
-        while (!operators.isEmpty()) {
-            postfixExpression.add(operators.pop());
-        }
-    
-        return postfixExpression;
     }
+
+    while (!operadores.isEmpty()) {
+        postfixExpresion.add(operadores.pop());
+    }
+
+    return postfixExpresion;
+}
 
     // Método para verificar si es un operador
     private boolean esOperador(String token) {
@@ -167,9 +160,13 @@ public class Interprete {
                     // Evaluar la expresión
                     postfixExpresion = infixToPostfix(expresion);
                     resultadoExpresion = evaluarExpresion(postfixExpresion);
-
-                    valor = new HashValores("entero", resultadoExpresion);
+                    
+                    valor = new HashValores("real", resultadoExpresion);
                     memoria.asignarVariable(tokens[1], valor);
+
+                    //HashValores valor = new HashValores("entero", resultadoExpresion);
+                    // Asignar el resultado a la variable
+                    //memoria.asignarVariable(variable, resultadoExpresion);
                     break;
                 case "real":
                     // Manejar instrucción de asignación de variable real
@@ -218,8 +215,7 @@ public class Interprete {
                     break;
                 case "imprime":
                     if(memoria.existeVariable(tokens[1])){
-                        System.out.print(memoria.obtenerVariable(tokens[1]));
-                        System.out.println(" de tipo:" + memoria.obtenerTipo(tokens[1]));
+                        System.out.println(memoria.obtenerVariable(tokens[1]));
                         break;
                     }else{
                         String mensaje = "";
@@ -238,8 +234,7 @@ public class Interprete {
                         List<String> expresion2 = Arrays.asList(tokens).subList(2, tokens.length);
                         List<String> postfixExpresion2 = infixToPostfix(expresion2);
                         Object resultadoExpresion2 = evaluarExpresion(postfixExpresion2);
-                        
-                        valor = new HashValores(memoria.obtenerTipo(tokens[0]), resultadoExpresion2);
+                        valor = new HashValores("real", resultadoExpresion2);
                         memoria.asignarVariable(tokens[0], valor);
                         break;
                     }

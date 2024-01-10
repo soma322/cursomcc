@@ -7,29 +7,31 @@ import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.util.Map;
 
-public class Memoria {
-     private HashMap<String,HashValores> memoria;
 
-     public Memoria() {
-        memoria = new HashMap<String,HashValores>();
-     }
+public class Memoria<T> {
 
-    public void asignarVariable(String variable,HashValores valor) {
-         memoria.put(variable, valor);
-         //memoria.put(variable, valor);
+    private HashMap<String,HashValores<T>> memoria;
+    
+    public Memoria() {
+        memoria = new HashMap<String,HashValores <T>>();
+    }
+
+    public void asignarVariable(String variable,HashValores<T> valor) {
+        memoria.put(variable, valor);
     }
 
     // Método para obtener el valor de una variable
-    public Object obtenerVariable(String valor) {
+    public T obtenerVariable(String valor) {
         return (memoria.get(valor).getValue());
     }
 
 
-    public boolean existeVariable(Object valor) {
+    public boolean existeVariable(String valor) {
         return memoria.containsKey(valor);
     }
-    public String obtenerClave(Object valor) {
-        for (Map.Entry<String, HashValores> entry : memoria.entrySet()) {
+
+    public String obtenerClave(T valor) {
+        for (Map.Entry<String, HashValores<T>> entry : memoria.entrySet()) {
             if (entry.getKey() == null) {
                 continue;
             }

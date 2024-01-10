@@ -26,30 +26,30 @@ public class Tablero {
 				this.nivelDificultad = 1;
 				this.filas = 8;
 				this.columnas = 8;
-				this.minas = (int) (0.10 * tamano());
+				this.minas = (10 * tamano()) /100;
 			break;
 			case BASICO:
 				this.nivelDificultad = 2;
 				this.filas = 15;
 				this.columnas = 15;
-				minimo = (int) (0.20 * tamano());
-            	maximo = (int) (0.25 * tamano());
+				minimo = (20 * tamano())/100;
+            	maximo = (25 * tamano())/100;
 				this.minas = random.nextInt(maximo - minimo + 1) + minimo;
 			break;
 			case MEDIO:
 				this.nivelDificultad = 3;
 				this.filas = 30;
 				this.columnas = 30;
-				minimo = (int) (0.20 * tamano());
-           	 	maximo = (int) (0.25 * tamano());
+				minimo = (20 * tamano()) /100;
+           	 	maximo = (25 * tamano()) /100;
 				this.minas = random.nextInt(maximo - minimo + 1) + minimo;
 			break;
 			case AVANZADO:
 				this.nivelDificultad = 4;
 				this.filas = 50;
 				this.columnas = 50;
-				minimo = (int) (0.25 * tamano());
-           	 	maximo = (int) (0.40 * tamano());
+				minimo =  (25 * tamano()) /100;
+           	 	maximo =  (40 * tamano()) /100;
 				this.minas = random.nextInt(maximo - minimo + 1) + minimo;
 			break;
 		}
