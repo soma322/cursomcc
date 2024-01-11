@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
 
         // Crear un objeto de la clase Commandos
-        Commandos commandos = new Commandos("src\\interprete\\CommandsTxt\\Commandos.txt");
+        Commandos commandos = new Commandos("interprete\\CommandsTxt\\Commandos.txt");
         List<String> programa = new ArrayList<>();
         Interprete interpreter = new Interprete();
         
@@ -19,7 +19,7 @@ public class Main {
             String linea;
 
             while ((linea = txt.readLine()) != null) {
-          
+                
                programa.add(linea);
             
                

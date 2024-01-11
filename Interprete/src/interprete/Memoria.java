@@ -16,31 +16,23 @@ public class Memoria {
 
     public void asignarVariable(String variable,HashValores valor) {
          memoria.put(variable, valor);
-         //memoria.put(variable, valor);
+    }
+
+    public void actualizarVariable(String nomVariable, Object valor) {
+        memoria.get(nomVariable).setValor(valor);
     }
 
     // Método para obtener el valor de una variable
-    public Object obtenerVariable(String valor) {
-        return (memoria.get(valor).getValue());
+    public Object obtenerValor(String nomVariable) {
+        return (memoria.get(nomVariable).getValue());
     }
 
 
-    public boolean existeVariable(Object valor) {//parametro string
-        return memoria.containsKey(valor);
-    }
-    public String obtenerClave(Object valor) {
-        for (Map.Entry<String, HashValores> entry : memoria.entrySet()) {
-            if (entry.getKey() == null) {
-                continue;
-            }
-            if (entry.getKey().equals(valor)) {
-                return entry.getKey();
-            }
-        }
-        return null;
+    public boolean existeVariable(String nomVariable) {//parametro string
+        return memoria.containsKey(nomVariable);
     }
 
-    public String obtenerTipo(String key ){
-        return memoria.get(key).getTipo();
+    public String obtenerTipo(String nomVariable ){
+        return memoria.get(nomVariable).getTipo();
     }
 }
